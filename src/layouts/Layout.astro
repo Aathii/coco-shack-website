@@ -24,7 +24,7 @@ const {
 
 const siteUrl = Astro.site ?? new URL(site.url);
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const ogImageUrl = new URL('/og-image.jpg', siteUrl).href;
+const ogImageUrl = new URL(`${import.meta.env.BASE_URL}og-image.jpg`, siteUrl).href;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -35,7 +35,7 @@ const jsonLd = {
 	description: site.description,
 	url: siteUrl.href,
 	image: ogImageUrl,
-	logo: new URL('/icon-512.png', siteUrl).href,
+	logo: new URL(`${import.meta.env.BASE_URL}icon-512.png`, siteUrl).href,
 	servesCuisine: ['Fresh coconut water', 'Sugarcane juice', 'Mocktails', 'Cocktails', 'Coffee & tea'],
 	address: {
 		'@type': 'PostalAddress',
@@ -71,10 +71,10 @@ const jsonLd = {
 		<meta name="theme-color" content="#0f0d0b" />
 		<meta name="color-scheme" content="dark" />
 
-		<link rel="icon" href="/favicon.ico" sizes="32x32" />
-		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} sizes="32x32" />
+		<link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+		<link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
+		<link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
 
 		<link rel="preload" href={frauncesFont} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={manropeFont} as="font" type="font/woff2" crossorigin />
