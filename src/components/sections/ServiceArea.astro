@@ -1,0 +1,31 @@
+---
+import Icon from '../ui/Icon.astro';
+import { site } from '../../config/site';
+---
+
+<section id="area" class="border-t border-cream/10 py-16 md:py-20" aria-labelledby="area-title">
+	<div class="container-page grid items-center gap-8 lg:grid-cols-12">
+		<div class="lg:col-span-4" data-reveal>
+			<p class="eyebrow">Where we pour</p>
+			<h2 id="area-title" class="mt-4 font-display text-[clamp(1.6rem,3vw,2.2rem)] font-semibold leading-tight text-cream">
+				Based in Toronto, <em class="font-medium italic text-clay-light">serving the GTA.</em>
+			</h2>
+		</div>
+		<ul class="flex flex-wrap gap-2.5 lg:col-span-8 lg:justify-end">
+			{
+				site.location.serviceArea.map((city) => (
+					<li
+						class="inline-flex items-center gap-2 rounded-full border border-cream/15 px-4 py-2.5 text-sm font-semibold text-cream-dim"
+						data-reveal
+					>
+						<Icon name="pin" class="h-3.5 w-3.5 text-clay-light" />
+						{city}
+					</li>
+				))
+			}
+			<li class="inline-flex items-center rounded-full border border-dashed border-cream/20 px-4 py-2.5 text-sm text-muted" data-reveal>
+				Further out? Just ask.
+			</li>
+		</ul>
+	</div>
+</section>

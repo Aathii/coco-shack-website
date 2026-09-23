@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Badge from '../components/brand/Badge.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<Layout title="Page not found | The Coco Shack" noindex>
+	<main id="main" class="grid min-h-svh place-items-center px-6 py-24 text-center">
+		<div>
+			<Badge spin decorative class="mx-auto h-28 w-28" />
+			<p class="eyebrow mt-10 justify-center">Error 404</p>
+			<h1 class="mt-5 font-display text-[clamp(2.4rem,7vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-cream">
+				This coconut <em class="font-medium italic text-clay-light">rolled away.</em>
+			</h1>
+			<p class="mx-auto mt-5 max-w-md text-cream-dim">The page you’re looking for doesn’t exist — but the bar is still open.</p>
+			<div class="mt-10 flex flex-wrap justify-center gap-3">
+				<Button href="/" label="Back to the site" />
+				<Button href="/#contact" label="Book Your Event" variant="ghost" />
+			</div>
+		</div>
+	</main>
+</Layout>

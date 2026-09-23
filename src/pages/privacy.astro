@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/ui/Icon.astro';
+import { instagramHandle, instagramUrl, mailHref, site } from '../config/site';
+
+// TODO (owner): review this notice and update the date whenever you change how you handle enquiries.
+const updated = 'September 2026';
+---
+
+<Layout title="Privacy | The Coco Shack" description="How The Coco Shack handles the details you share through our booking form.">
+	<main id="main" class="container-page max-w-3xl py-28 md:py-36">
+		<a href="/" class="link-line flex w-fit items-center gap-2 text-sm font-semibold text-cream-dim hover:text-cream">
+			<Icon name="arrow" class="h-4 w-4 rotate-180" /> Back to The Coco Shack
+		</a>
+
+		<p class="eyebrow mt-14 flex w-fit">Privacy notice</p>
+		<h1 class="mt-5 font-display text-[clamp(2.2rem,6vw,3.6rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-cream">
+			Your details, <em class="font-medium italic text-clay-light">handled simply.</em>
+		</h1>
+		<p class="mt-4 text-sm text-muted">Last updated {updated}</p>
+
+		<div class="prose-block mt-12 space-y-10 text-[1.02rem] leading-relaxed text-cream-dim">
+			<section>
+				<h2>What we collect</h2>
+				<p>
+					When you send a booking request we receive what you enter: your name, email, phone number (if given) and the details of
+					your event — date, guest count, location, the stations you’re interested in, service time, budget range and any notes.
+				</p>
+			</section>
+
+			<section>
+				<h2>How we use it</h2>
+				<p>
+					Only to reply to your request, put together a quote and plan your event. We don’t sell your information or add you to
+					marketing lists.
+				</p>
+			</section>
+
+			<section>
+				<h2>Where it goes</h2>
+				<p>
+					Requests are delivered to our inbox through a form-delivery service. Your browser may keep an unfinished request on your
+					device until you close the tab, so you don’t lose your progress. This site doesn’t use advertising or tracking cookies.
+				</p>
+			</section>
+
+			<section>
+				<h2>Your choices</h2>
+				<p>
+					Want us to update or delete what you’ve sent? Just ask and we’ll take care of it.
+				</p>
+			</section>
+
+			<section>
+				<h2>Contact</h2>
+				<p class="flex flex-col gap-2">
+					<a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 font-semibold text-cream hover:text-clay-light">
+						<Icon name="instagram" class="h-4 w-4 text-clay-light" />
+						{instagramHandle}
+					</a>
+					{
+						mailHref && (
+							<a href={mailHref} class="inline-flex items-center gap-2 font-semibold text-cream hover:text-clay-light">
+								<Icon name="mail" class="h-4 w-4 text-clay-light" />
+								{site.contact.email}
+							</a>
+						)
+					}
+				</p>
+			</section>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.prose-block h2 {
+		margin-bottom: 0.75rem;
+		font-family: var(--font-display);
+		font-size: 1.45rem;
+		font-weight: 600;
+		color: var(--color-cream);
+	}
+</style>

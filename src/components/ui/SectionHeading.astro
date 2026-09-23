@@ -1,0 +1,22 @@
+---
+/** Eyebrow + display title (+ optional lede). Wrap words in *asterisks* to set them in the clay italic. */
+interface Props {
+	eyebrow?: string;
+	title: string;
+	lede?: string;
+	align?: 'left' | 'center';
+	class?: string;
+	titleId?: string;
+}
+
+const { eyebrow, title, lede, align = 'left', class: className = '', titleId } = Astro.props;
+const parts = title.split('*');
+---
+
+<div class:list={[align === 'center' && 'mx-auto text-center', className]}>
+	{eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+	<h2 id={titleId} class="section-title mt-5" data-reveal="clip">
+		<span class="reveal-inner">{parts.map((part, i) => (i % 2 === 1 ? <em>{part}</em> : part))}</span>
+	</h2>
+	{lede && <p class:list={['section-lede mt-6', align === 'center' && 'mx-auto']} data-reveal>{lede}</p>}
+</div>

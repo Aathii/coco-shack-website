@@ -1,0 +1,133 @@
+---
+import Icon from '../ui/Icon.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { eventTypes } from '../../data/content';
+---
+
+<section id="events" class="section border-t border-cream/10" aria-labelledby="events-title">
+	<div class="container-page">
+		<SectionHeading
+			eyebrow="03 — Built for"
+			title="Weddings, brand moments *and festival days.*"
+			titleId="events-title"
+			lede="Pick yours to start a booking — we’ll tailor the stations and styling to it."
+		/>
+
+		<ul class="mt-12 border-t border-cream/10 md:mt-16">
+			{
+				eventTypes.map((event, i) => (
+					<li data-reveal>
+						<a href="#contact" data-prefill-event={event.value} class="event-row group">
+							<span class="event-num font-display text-sm italic text-muted">0{i + 1}</span>
+							<span class="event-title font-display text-[1.7rem] font-semibold leading-tight text-cream md:text-[2.1rem]">
+								{event.title}
+							</span>
+							<span class="event-desc text-[0.95rem] leading-relaxed text-cream-dim">{event.desc}</span>
+							<span class="event-arrow" aria-hidden="true">
+								<Icon name="arrow-up-right" class="h-5 w-5" />
+							</span>
+							<span class="sr-only"> — start a booking</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.event-row {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-areas:
+			'num arrow'
+			'title arrow'
+			'desc desc';
+		column-gap: 1rem;
+		row-gap: 0.5rem;
+		padding: 1.75rem 0;
+		border-bottom: 1px solid rgba(246, 239, 225, 0.1);
+	}
+
+	.event-row::before {
+		content: '';
+		position: absolute;
+		inset: 0 -1.25rem;
+		z-index: -1;
+		background: var(--color-panel);
+		transform: scaleY(0);
+		transform-origin: bottom;
+		transition: transform 0.6s var(--ease-premium);
+	}
+
+	.event-num {
+		grid-area: num;
+	}
+
+	.event-title {
+		grid-area: title;
+		transition: transform 0.6s var(--ease-premium);
+	}
+
+	.event-desc {
+		grid-area: desc;
+		max-width: 34rem;
+	}
+
+	.event-arrow {
+		grid-area: arrow;
+		align-self: center;
+		display: grid;
+		place-items: center;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 999px;
+		border: 1px solid rgba(246, 239, 225, 0.2);
+		color: var(--color-clay-light);
+		transition:
+			background-color 0.5s var(--ease-premium),
+			color 0.5s var(--ease-premium),
+			border-color 0.5s var(--ease-premium),
+			transform 0.6s var(--ease-premium);
+	}
+
+	.event-row:active .event-arrow {
+		background: var(--color-clay);
+		border-color: var(--color-clay);
+		color: var(--color-ink);
+	}
+
+	@media (min-width: 768px) {
+		.event-row {
+			grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1.25fr) auto;
+			grid-template-areas: 'num title desc arrow';
+			align-items: center;
+			column-gap: 2rem;
+			padding: 2.25rem 0;
+		}
+
+		.event-row::before {
+			inset: 0 -1.5rem;
+			border-radius: 1.25rem;
+		}
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.event-row:hover::before {
+			transform: scaleY(1);
+		}
+
+		.event-row:hover .event-title {
+			transform: translate3d(0.6rem, 0, 0);
+		}
+
+		.event-row:hover .event-arrow {
+			background: var(--color-clay);
+			border-color: var(--color-clay);
+			color: var(--color-ink);
+			transform: rotate(45deg);
+		}
+	}
+</style>

@@ -1,0 +1,39 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { telHref } from '../../config/site';
+---
+
+<div id="mobile-cta" class="mobile-cta sm:hidden" inert>
+	<div class="flex items-center gap-2.5">
+		<Button href="#contact" label="Book Your Event" class="flex-1" />
+		{
+			telHref && (
+				<a href={telHref} class="btn btn-ghost btn-icon-only" aria-label="Call The Coco Shack">
+					<Icon name="phone" class="h-5 w-5" />
+				</a>
+			)
+		}
+	</div>
+</div>
+
+<style>
+	.mobile-cta {
+		position: fixed;
+		inset-inline: 0;
+		bottom: 0;
+		z-index: 45;
+		padding: 0.75rem 1rem calc(env(safe-area-inset-bottom) + 0.75rem);
+		background: linear-gradient(180deg, rgba(15, 13, 11, 0) 0%, rgba(15, 13, 11, 0.92) 38%);
+		transform: translate3d(0, 115%, 0);
+		transition: transform 0.6s var(--ease-premium);
+	}
+
+	.mobile-cta.is-visible {
+		transform: translate3d(0, 0, 0);
+	}
+
+	:global(body.menu-open) .mobile-cta {
+		transform: translate3d(0, 115%, 0);
+	}
+</style>

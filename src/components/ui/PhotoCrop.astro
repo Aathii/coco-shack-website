@@ -1,0 +1,56 @@
+---
+/**
+ * Shows a zoomed-in region of the real booth photo. Reuses the same image file as the
+ * hero (identical widths/quality), so detail shots cost no extra download.
+ *
+ * cx, cy: focal point as a fraction of the photo (0–1). cw: how much of the photo's width to show.
+ */
+import { Image } from 'astro:assets';
+import booth from '../../assets/booth.jpg';
+
+interface Props {
+	cx: number;
+	cy: number;
+	cw: number;
+	aspect: number;
+	alt: string;
+	class?: string;
+	reveal?: boolean;
+}
+
+const { cx, cy, cw: requestedCw, aspect, alt, class: className = '', reveal = true } = Astro.props;
+
+const photoAspect = booth.width / booth.height;
+const cw = Math.min(requestedCw, aspect / photoAspect, 1);
+const ch = (cw * photoAspect) / aspect;
+const x = Math.min(Math.max(cx, cw / 2), 1 - cw / 2);
+const y = Math.min(Math.max(cy, ch / 2), 1 - ch / 2);
+
+// Inline so no global `img { max-width: 100% }` reset can shrink the zoomed photo back down.
+const imgStyle = [
+	'max-width:none',
+	`width:${(100 / cw).toFixed(3)}%`,
+	`left:${((0.5 - x / cw) * 100).toFixed(3)}%`,
+	`top:${((0.5 - y / ch) * 100).toFixed(3)}%`,
+	`transform-origin:${(x * 100).toFixed(2)}% ${(y * 100).toFixed(2)}%`,
+].join(';');
+---
+
+<div
+	class:list={['relative overflow-hidden bg-panel', className]}
+	style={`aspect-ratio:${aspect}`}
+	data-reveal={reveal ? 'image' : undefined}
+>
+	<div class="reveal-mask absolute inset-0">
+		<Image
+			src={booth}
+			alt={alt}
+			widths={[640, 1024, 1170]}
+			sizes="1170px"
+			quality={82}
+			loading="lazy"
+			class="absolute h-auto"
+			style={imgStyle}
+		/>
+	</div>
+</div>

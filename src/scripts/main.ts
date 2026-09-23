@@ -1,0 +1,25 @@
+import { initAccordion } from './accordion';
+import { initBookingForm } from './booking-form';
+import { initCalendlyButtons } from './calendly';
+import { initHeader } from './header';
+import { initHero } from './hero';
+import { initMobileCta } from './mobile-cta';
+import { initOwnerCarousel } from './owner-carousel';
+import { initPointerFx } from './pointer-fx';
+import { initPreloader } from './preloader';
+import { initReveal } from './reveal';
+import { initSmoothScroll } from './smooth-scroll';
+import { initWordReveal } from './word-reveal';
+
+initPreloader();
+initSmoothScroll();
+initHeader();
+initHero();
+initReveal();
+initWordReveal();
+initAccordion();
+initPointerFx();
+initMobileCta();
+initCalendlyButtons();
+initBookingForm();
+initOwnerCarousel();

@@ -1,0 +1,229 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { instagramHandle, instagramUrl, site, telHref } from '../../config/site';
+
+const links = [
+	{ href: '#services', label: 'Services' },
+	{ href: '#events', label: 'Events' },
+	{ href: '#process', label: 'How It Works' },
+	{ href: '#about', label: 'About' },
+	{ href: '#faq', label: 'FAQ' },
+];
+---
+
+<header id="site-header" class="site-header fixed inset-x-0 top-0 z-50">
+	<div class="header-inner container-page flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
+		<a href="#top" class="group flex items-center gap-2.5" aria-label="The Coco Shack — back to top">
+			<Icon name="coconut" class="h-7 w-7 text-clay-light transition-transform duration-700 group-hover:-rotate-12" strokeWidth={1.7} />
+			<span class="font-display text-[1.15rem] font-semibold tracking-tight text-cream">The Coco Shack</span>
+		</a>
+
+		<nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
+			{
+				links.map((link) => (
+					<a href={link.href} data-nav-link class="nav-link link-line text-sm font-semibold text-cream-dim">
+						{link.label}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="flex items-center gap-2.5">
+			<Button href="#contact" label="Book Your Event" size="sm" class="hidden sm:inline-flex" magnetic />
+			<button
+				id="menu-toggle"
+				type="button"
+				class="menu-toggle lg:hidden"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+				aria-label="Open menu"
+			>
+				<span class="bar bar-top"></span>
+				<span class="bar bar-bottom"></span>
+			</button>
+		</div>
+	</div>
+</header>
+
+<!--
+	A sibling of <header> on purpose: the header's glass effect uses backdrop-filter,
+	which would trap a fixed-position child inside the header's own box.
+-->
+<div id="mobile-menu" class="mobile-menu lg:hidden" inert data-lenis-prevent>
+	<nav aria-label="Mobile" class="container-page flex min-h-full flex-col pb-[calc(env(safe-area-inset-bottom)+1.75rem)] pt-[calc(env(safe-area-inset-top)+7rem)]">
+		<ul>
+			{
+				links.map((link, i) => (
+					<li class="menu-item" style={`--i:${i}`}>
+						<a href={link.href} class="menu-link">
+							<span>{link.label}</span>
+							<Icon name="arrow-up-right" class="h-5 w-5 text-clay-light" />
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="menu-item mt-auto pt-10" style={`--i:${links.length}`}>
+			<Button href="#contact" label="Book Your Event" size="lg" block />
+			<div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm font-semibold text-cream-dim">
+				<a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2">
+					<Icon name="instagram" class="h-4 w-4 text-clay-light" />
+					{instagramHandle}
+				</a>
+				{
+					telHref && (
+						<a href={telHref} class="inline-flex items-center gap-2">
+							<Icon name="phone" class="h-4 w-4 text-clay-light" />
+							{site.contact.phone}
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</nav>
+</div>
+
+<style>
+	/* Clears the status bar when the site runs full-screen (home-screen app, in-app browsers). */
+	.site-header {
+		padding-top: env(safe-area-inset-top, 0px);
+		transition: transform 0.7s var(--ease-premium);
+	}
+
+	.site-header::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: rgba(15, 13, 11, 0.74);
+		backdrop-filter: blur(16px) saturate(140%);
+		-webkit-backdrop-filter: blur(16px) saturate(140%);
+		border-bottom: 1px solid rgba(246, 239, 225, 0.08);
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.site-header.is-scrolled::before {
+		opacity: 1;
+	}
+
+	.site-header.is-hidden {
+		transform: translate3d(0, -105%, 0);
+	}
+
+	:global(body.menu-open) .site-header::before {
+		opacity: 0;
+	}
+
+	.header-inner {
+		animation: fade-down 1s var(--ease-premium) 0.9s backwards;
+	}
+
+	@keyframes fade-down {
+		from {
+			opacity: 0;
+			transform: translate3d(0, -16px, 0);
+		}
+	}
+
+	.nav-link {
+		transition: color 0.3s ease;
+	}
+
+	.nav-link:hover,
+	.nav-link[aria-current='true'] {
+		color: var(--color-cream);
+	}
+
+	.menu-toggle {
+		position: relative;
+		width: 2.9rem;
+		height: 2.9rem;
+		border-radius: 999px;
+		border: 1px solid rgba(246, 239, 225, 0.22);
+		color: var(--color-cream);
+		transition:
+			border-color 0.3s ease,
+			background-color 0.3s ease;
+	}
+
+	.menu-toggle:active {
+		background: rgba(246, 239, 225, 0.08);
+	}
+
+	.bar {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 1.05rem;
+		height: 1.5px;
+		margin-left: -0.525rem;
+		border-radius: 2px;
+		background: currentColor;
+		transition: transform 0.55s var(--ease-premium);
+	}
+
+	.bar-top {
+		transform: translateY(calc(-50% - 3.5px));
+	}
+
+	.bar-bottom {
+		transform: translateY(calc(-50% + 3.5px));
+	}
+
+	.menu-toggle[aria-expanded='true'] .bar-top {
+		transform: translateY(-50%) rotate(45deg);
+	}
+
+	.menu-toggle[aria-expanded='true'] .bar-bottom {
+		transform: translateY(-50%) rotate(-45deg);
+	}
+
+	.mobile-menu {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		background: var(--color-ink);
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.45s var(--ease-premium),
+			visibility 0s linear 0.45s;
+	}
+
+	.mobile-menu.is-open {
+		opacity: 1;
+		visibility: visible;
+		transition:
+			opacity 0.45s var(--ease-premium),
+			visibility 0s;
+	}
+
+	.mobile-menu.is-open .menu-item {
+		animation: fade-up 0.8s var(--ease-premium) both;
+		animation-delay: calc(0.12s + var(--i) * 0.055s);
+	}
+
+	.menu-link {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 1.05rem;
+		border-bottom: 1px solid rgba(246, 239, 225, 0.1);
+		font-family: var(--font-display);
+		font-size: clamp(1.9rem, 8.5vw, 2.7rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--color-cream);
+		transition: color 0.3s ease;
+	}
+
+	.menu-link:active {
+		color: var(--color-clay-light);
+	}
+</style>

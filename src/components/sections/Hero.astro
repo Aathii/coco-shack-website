@@ -1,0 +1,487 @@
+---
+import { Image } from 'astro:assets';
+import andrewHero from '../../assets/owner/andrew-hero.jpg';
+import desktopMp4 from '../../assets/hero/coconut-cut-desktop.mp4?url';
+import desktopPoster from '../../assets/hero/coconut-cut-desktop-poster.jpg?url';
+import desktopWebm from '../../assets/hero/coconut-cut-desktop.webm?url';
+import mobileMp4 from '../../assets/hero/coconut-cut-mobile.mp4?url';
+import mobilePoster from '../../assets/hero/coconut-cut-mobile-poster.jpg?url';
+import mobileWebm from '../../assets/hero/coconut-cut-mobile.webm?url';
+import Badge from '../brand/Badge.astro';
+import Button from '../ui/Button.astro';
+---
+
+<section id="hero-stage" class="hero" aria-labelledby="hero-title" data-inert-when-menu>
+	<div class="hero-media" aria-hidden="true">
+		<div class="hero-zoom">
+			<!-- Beat 1: a quick zoom into Andrew — fades out on its own (see below) as the video takes over. -->
+			<Image
+				src={andrewHero}
+				alt=""
+				widths={[640, 960, 1280]}
+				sizes="100vw"
+				quality={82}
+				loading="eager"
+				fetchpriority="high"
+				class="hero-photo hero-photo-intro"
+			/>
+			<!--
+				Beat 2: Andrew cutting a coconut, live — loops as the hero's ambient backdrop from then on.
+				Shot in portrait; a landscape crop of the same clip exists so wide/desktop viewports don't
+				force-scale the portrait footage into an extreme zoom to cover the frame. The inline script
+				picks one BEFORE any source is attached, so only the right file is ever fetched.
+			-->
+			<video
+				id="hero-video"
+				class="hero-photo hero-video"
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="auto"
+				data-mobile-mp4={mobileMp4}
+				data-mobile-webm={mobileWebm}
+				data-mobile-poster={mobilePoster}
+				data-desktop-mp4={desktopMp4}
+				data-desktop-webm={desktopWebm}
+				data-desktop-poster={desktopPoster}
+			></video>
+			<script is:inline>
+				(() => {
+					const v = document.getElementById('hero-video');
+					if (!v) return;
+					// Reduced motion: scripts/hero.ts keeps Andrew's photo as the resting background instead —
+					// leave the video source-less so it never even downloads.
+					if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+					// Landscape-oriented viewport (wide monitors, tablets sideways) gets the landscape crop;
+					// everything portrait-ish (phones, most tablets upright) gets the original framing.
+					const wide = window.innerWidth > window.innerHeight;
+					const prefix = wide ? 'desktop' : 'mobile';
+					v.poster = v.dataset[`${prefix}Poster`];
+					for (const format of ['webm', 'mp4']) {
+						const source = document.createElement('source');
+						source.src = v.dataset[`${prefix}${format === 'webm' ? 'Webm' : 'Mp4'}`];
+						source.type = `video/${format}`;
+						v.appendChild(source);
+					}
+
+					// The `autoplay` attribute doesn't reliably kick in for sources attached after the
+					// element already existed, so play() is called explicitly (muted, so it's allowed) —
+					// but calling it immediately after load() is routinely rejected with "video-only
+					// background media was paused to save power," because Chromium hasn't yet accepted
+					// the freshly re-sourced element as active media at that exact instant. That rejection
+					// doesn't reliably fire a `pause` event to react to (playback never started, so there's
+					// no playing→paused transition), so this just retries on a short schedule instead,
+					// stopping for good once `playing` confirms it actually stuck.
+					let stuck = false;
+					v.addEventListener('playing', () => (stuck = true), { once: true });
+					const tryPlay = () => !stuck && v.play().catch(() => {});
+					v.addEventListener('loadeddata', tryPlay, { once: true });
+					v.addEventListener('canplay', tryPlay, { once: true });
+					v.load();
+					tryPlay();
+					for (const delay of [100, 300, 800, 1500]) setTimeout(tryPlay, delay);
+				})();
+			</script>
+		</div>
+		<div class="hero-shade"></div>
+		<div class="hero-vignette"></div>
+		<div class="hero-dim"></div>
+	</div>
+
+	<div class="hero-content container-page">
+		<div class="hero-badge-anchor" data-hero-badge-anchor>
+			<div class="hero-badge-scroll">
+				<div class="hero-glow" aria-hidden="true"></div>
+				<Badge class="hero-badge" />
+			</div>
+		</div>
+
+		<div class="hero-copy">
+			<p class="eyebrow hero-in justify-center" style="--d: 1.1s">Fresh from the islands</p>
+			<h1 id="hero-title" class="hero-title">
+				<span class="hero-line"><span style="--d: 1.25s">Coconuts cut live.</span></span>
+				<span class="hero-line"><span style="--d: 1.35s">Cocktails served</span></span>
+				<span class="hero-line"><span style="--d: 1.45s"><em>in the shell.</em></span></span>
+			</h1>
+			<p class="hero-sub hero-in" style="--d: 1.65s">
+				Toronto’s live coconut bar for weddings, corporate events and festivals.
+			</p>
+			<div class="hero-actions hero-in" style="--d: 1.8s">
+				<Button href="#contact" label="Book Your Event" size="lg" magnetic />
+				<Button href="#services" label="See What We Pour" variant="ghost" size="lg" icon="arrow-down" class="hidden sm:inline-flex" />
+			</div>
+		</div>
+	</div>
+
+	<div class="hero-cue" aria-hidden="true">
+		<div class="hero-in flex flex-col items-center gap-3" style="--d: 2.3s">
+			<span>Scroll</span>
+			<span class="scroll-cue-line"></span>
+		</div>
+	</div>
+</section>
+
+<div id="hero-spacer" class="hero-spacer" aria-hidden="true"></div>
+
+<style>
+	.hero {
+		--p: 0;
+		--badge-shift: 0px;
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 0;
+		height: 100lvh;
+		overflow: hidden;
+		background: var(--color-ink);
+	}
+
+	.hero.is-covered {
+		visibility: hidden;
+	}
+
+	.hero-media {
+		position: absolute;
+		inset: 0;
+	}
+
+	/* Scroll: the camera pushes toward the booth. */
+	.hero-zoom {
+		position: absolute;
+		inset: 0;
+		transform: scale(calc(1 + var(--p) * 0.24));
+		transform-origin: 55% 64%;
+		will-change: transform;
+	}
+
+	/* Shared fit/position for whichever layer is on top — the intro photo, then the video beneath it. */
+	.hero-zoom :global(.hero-photo) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 55% 64%;
+	}
+
+	/* Beat 1 (0–1.7s): Andrew arrives, holds a moment, then fades — the video underneath is already
+	   playing throughout, so the cut to it never shows a frozen first frame. */
+	.hero-zoom :global(.hero-photo-intro) {
+		z-index: 1;
+		animation:
+			hero-arrive 1s var(--ease-premium) both,
+			hero-photo-out 0.7s var(--ease-premium) 1.1s both;
+	}
+
+	@media (min-width: 768px) {
+		.hero-zoom :global(.hero-photo-intro) {
+			animation-name: hero-arrive-focus, hero-photo-out;
+		}
+	}
+
+	/* Reduced motion, or the video failing to load (scripts/hero.ts sets this class either way):
+	   keep Andrew's photo as the resting background instead of cutting to the video. */
+	.hero.no-hero-video .hero-zoom :global(.hero-photo-intro) {
+		animation: hero-arrive-focus 1s var(--ease-premium) both;
+	}
+
+	.hero.no-hero-video .hero-zoom :global(.hero-video) {
+		display: none;
+	}
+
+	.hero-zoom :global(.hero-video) {
+		z-index: 0;
+		background: var(--color-ink);
+		animation:
+			hero-video-in 0.7s var(--ease-premium) 1.1s both,
+			hero-drift 26s ease-in-out 1.8s infinite alternate;
+	}
+
+	@keyframes hero-arrive {
+		from {
+			opacity: 0;
+			transform: scale(1.16);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1.03);
+		}
+	}
+
+	@keyframes hero-arrive-focus {
+		from {
+			opacity: 0;
+			transform: scale(1.16);
+			filter: blur(14px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1.03);
+			filter: blur(0);
+		}
+	}
+
+	@keyframes hero-photo-out {
+		from {
+			opacity: 1;
+			transform: scale(1.03);
+		}
+		to {
+			opacity: 0;
+			transform: scale(1.1);
+		}
+	}
+
+	@keyframes hero-video-in {
+		from {
+			opacity: 0;
+			transform: scale(1.14);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1.03);
+		}
+	}
+
+	@keyframes hero-drift {
+		from {
+			transform: scale(1.03);
+		}
+		to {
+			transform: scale(1.09) translate3d(-1%, -0.6%, 0);
+		}
+	}
+
+	/*
+	  Darkest right where the headline sits (~28–58%). The original booth photo was calm enough
+	  that a light middle band worked; the video is brighter and busier (skin tones, apron text,
+	  the coconut itself), so it needs consistently more darkening there to stay legible as it loops —
+	  the text-shadow on .hero-copy below is the second line of defence for the same reason.
+	*/
+	.hero-shade {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(15, 13, 11, 0.74) 0%,
+			rgba(15, 13, 11, 0.5) 28%,
+			rgba(15, 13, 11, 0.56) 58%,
+			rgba(15, 13, 11, 0.94) 100%
+		);
+	}
+
+	.hero-vignette {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(ellipse 72% 56% at 50% 52%, rgba(15, 13, 11, 0.6), transparent 76%);
+	}
+
+	.hero-dim {
+		position: absolute;
+		inset: 0;
+		background: var(--color-ink);
+		opacity: calc(var(--p) * 0.5);
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100svh;
+		padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+		padding-bottom: 3.5rem;
+		text-align: center;
+	}
+
+	.hero-badge-anchor {
+		width: clamp(5.25rem, 15vw, 8.25rem);
+		aspect-ratio: 1;
+		flex-shrink: 0;
+	}
+
+	/* Scroll: the badge drifts to centre, grows and glows — "arriving" at the booth. */
+	.hero-badge-scroll {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transform: translate3d(0, calc(var(--p) * var(--badge-shift)), 0) scale(calc(1 + var(--p) * 1.15));
+		will-change: transform;
+	}
+
+	/* A soft dark disc behind the badge, like the white circle on the real sign, keeps it legible over the photo. */
+	.hero-badge-scroll::after {
+		content: '';
+		position: absolute;
+		inset: 2%;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(15, 13, 11, 0.62) 55%, rgba(15, 13, 11, 0.3) 70%, transparent 71%);
+		animation: fade-in 1.4s ease 0.6s both;
+	}
+
+	.hero-badge-scroll :global(.hero-badge) {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		filter: drop-shadow(0 0 14px rgba(227, 178, 126, 0.55));
+		animation: badge-in 1.7s var(--ease-premium) 0.45s both;
+	}
+
+	@keyframes badge-in {
+		from {
+			opacity: 0;
+			transform: scale(0.55) rotate(-70deg);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	.hero-glow {
+		position: absolute;
+		inset: -75%;
+		opacity: calc(0.5 + var(--p) * 0.5);
+		transform: scale(calc(0.8 + var(--p) * 0.45));
+		pointer-events: none;
+	}
+
+	.hero-glow::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle,
+			rgba(240, 190, 130, 0.7) 0%,
+			rgba(227, 178, 126, 0.42) 26%,
+			rgba(193, 128, 76, 0.18) 44%,
+			transparent 66%
+		);
+		animation:
+			fade-in 2s ease 0.8s both,
+			glow-pulse 4.5s ease-in-out 3s infinite;
+	}
+
+	@keyframes glow-pulse {
+		0%,
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.68;
+			transform: scale(0.93);
+		}
+	}
+
+	/* Scroll: the copy lifts away as the badge takes over. */
+	.hero-copy {
+		margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
+		opacity: calc(1 - var(--p) * 2.4);
+		transform: translate3d(0, calc(var(--p) * -80px), 0);
+		will-change: opacity, transform;
+		/* Second line of defence for legibility over the busier video (inherits to every child). */
+		text-shadow:
+			0 2px 24px rgba(15, 13, 11, 0.55),
+			0 1px 2px rgba(15, 13, 11, 0.45);
+	}
+
+	.hero.copy-gone .hero-copy {
+		visibility: hidden;
+	}
+
+	.hero-copy .eyebrow::before {
+		display: none;
+	}
+
+	.hero-in {
+		animation: fade-up 1.1s var(--ease-premium) var(--d, 0s) both;
+	}
+
+	.hero-title {
+		margin-top: 1.1rem;
+		font-size: clamp(2.3rem, 7.2vw, 5.9rem);
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+		color: var(--color-cream);
+	}
+
+	.hero-title em {
+		font-style: italic;
+		font-weight: 500;
+		color: var(--color-clay-light);
+	}
+
+	.hero-line {
+		display: block;
+		overflow: hidden;
+		padding-bottom: 0.08em;
+		margin-bottom: -0.08em;
+	}
+
+	.hero-line > span {
+		display: block;
+		animation: line-up 1.25s var(--ease-premium) var(--d, 0s) both;
+	}
+
+	.hero-sub {
+		max-width: 33rem;
+		margin: 1.35rem auto 0;
+		font-size: clamp(1rem, 2.3vw, 1.2rem);
+		line-height: 1.6;
+		color: var(--color-cream-dim);
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.85rem;
+		margin-top: 2rem;
+	}
+
+	.hero-cue {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: calc(100lvh - 100svh + env(safe-area-inset-bottom) + 1.4rem);
+		z-index: 1;
+		display: flex;
+		justify-content: center;
+		font-size: 0.64rem;
+		font-weight: 700;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+		color: rgba(246, 239, 225, 0.6);
+		opacity: calc(1 - var(--p) * 4);
+	}
+
+	/* Only show the cue when there's room below the buttons. */
+	@media (max-height: 820px) {
+		.hero-cue {
+			display: none;
+		}
+	}
+
+	.hero-spacer {
+		height: 165svh;
+	}
+
+	@media (min-width: 768px) {
+		.hero-spacer {
+			height: 195svh;
+		}
+	}
+
+	/* Reduced motion skips the scroll-driven sequence, so the content starts rising straight away. */
+	@media (prefers-reduced-motion: reduce) {
+		.hero-spacer {
+			height: 100svh;
+		}
+	}
+</style>

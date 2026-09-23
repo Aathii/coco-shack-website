@@ -1,0 +1,21 @@
+---
+import Icon from '../ui/Icon.astro';
+import { marqueeItems } from '../../data/content';
+---
+
+<div class="border-b border-cream/10 py-6 md:py-8" aria-hidden="true">
+	<div class="marquee">
+		{
+			[0, 1].map(() => (
+				<div class="marquee-track">
+					{marqueeItems.map((item) => (
+						<>
+							<span class="font-display text-[1.6rem] italic leading-none text-cream/90 md:text-[2.4rem]">{item}</span>
+							<Icon name="sparkle" class="h-5 w-5 shrink-0 text-clay md:h-6 md:w-6" />
+						</>
+					))}
+				</div>
+			))
+		}
+	</div>
+</div>

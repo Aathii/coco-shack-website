@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+type Props = HTMLAttributes<'a'> &
+	HTMLAttributes<'button'> & {
+		label: string;
+		href?: string;
+		variant?: 'primary' | 'ghost';
+		size?: 'sm' | 'md' | 'lg';
+		icon?: IconName | null;
+		type?: 'button' | 'submit';
+		block?: boolean;
+		magnetic?: boolean;
+	};
+
+const {
+	label,
+	href,
+	variant = 'primary',
+	size = 'md',
+	icon = 'arrow',
+	type = 'button',
+	block = false,
+	magnetic = false,
+	class: className,
+	...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+	href={href}
+	type={href ? undefined : type}
+	class:list={['btn', `btn-${variant}`, size !== 'md' && `btn-${size}`, block && 'w-full', className]}
+	data-magnetic={magnetic ? '' : undefined}
+	{...rest}
+>
+	<span class="btn-roll">
+		<span class="btn-roll-inner">
+			<span>{label}</span>
+			<span aria-hidden="true">{label}</span>
+		</span>
+	</span>
+	{icon && <Icon name={icon} class="btn-icon h-4 w-4" strokeWidth={1.8} />}
+</Tag>

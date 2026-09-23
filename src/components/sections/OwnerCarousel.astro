@@ -1,0 +1,195 @@
+---
+/**
+ * Andrew, the owner, on site with real clients — a sleek single-image carousel (auto-advancing,
+ * swipeable, arrow + dot controls). Sits where the old photo-grid "Moments" section did, between
+ * EventTypes and Process. Unnumbered, like Testimonials/CtaBand/ServiceArea: a supporting beat.
+ */
+import { Image } from 'astro:assets';
+import andrewCorporate from '../../assets/owner/andrew-corporate.jpg';
+import andrewCorporateServing from '../../assets/owner/andrew-corporate-serving.jpg';
+import andrewCuttingCloseup from '../../assets/owner/andrew-cutting-closeup.jpg';
+import andrewGalaGuest from '../../assets/owner/andrew-gala-guest.jpg';
+import andrewGroup from '../../assets/owner/andrew-group.jpg';
+import andrewHero from '../../assets/owner/andrew-hero.jpg';
+import andrewMarket from '../../assets/owner/andrew-market.jpg';
+import Icon from '../ui/Icon.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const photos = [
+	{ src: andrewGroup, alt: 'Andrew, the owner of The Coco Shack, with a group of clients at an evening event', caption: 'With clients at an evening event' },
+	{ src: andrewCuttingCloseup, alt: 'Andrew cutting a fresh coconut on site at an indoor event', caption: 'Cutting on site, gala season' },
+	{ src: andrewCorporateServing, alt: 'Andrew handing a freshly cut coconut to a guest at a corporate event', caption: 'Serving guests at a corporate event' },
+	{ src: andrewGalaGuest, alt: 'Andrew serving a coconut to a guest at an indoor gala', caption: 'An evening gala in Toronto' },
+	{ src: andrewHero, alt: 'Andrew standing at the Coco Shack station at an outdoor festival', caption: 'At a community festival' },
+	{ src: andrewCorporate, alt: 'Andrew at the Coco Shack station outside a corporate office', caption: 'A corporate booking in the GTA' },
+	{ src: andrewMarket, alt: 'Andrew at a Coco Shack market stand', caption: 'Pop-up market, Toronto' },
+] as const;
+---
+
+<section id="team" class="section border-t border-cream/10" aria-labelledby="team-title">
+	<div class="container-page">
+		<SectionHeading
+			eyebrow="Meet the owner"
+			title="Andrew, *behind every bar.*"
+			titleId="team-title"
+			lede="He's the one on site cutting, styling and serving — here he is doing it."
+			align="center"
+		/>
+
+		<div class="carousel mt-12 md:mt-16" data-carousel>
+			<div class="carousel-viewport" data-reveal>
+				<div
+					class="carousel-track"
+					data-carousel-track
+					tabindex="0"
+					role="group"
+					aria-label="Photos of Andrew, the owner, at events. Use the arrow keys or the buttons below to browse."
+				>
+					{
+						photos.map((photo, i) => (
+							<figure class="carousel-slide" data-carousel-slide>
+								<Image
+									src={photo.src}
+									alt={photo.alt}
+									widths={[480, 768, 1100]}
+									sizes="(min-width: 768px) 640px, 92vw"
+									quality={82}
+									loading={i === 0 ? 'eager' : 'lazy'}
+									class="h-full w-full object-cover"
+								/>
+								<figcaption class="carousel-caption">{photo.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="carousel-controls">
+				<button type="button" class="carousel-arrow" data-carousel-prev aria-label="Previous photo">
+					<Icon name="arrow" class="h-4 w-4 rotate-180" />
+				</button>
+				<div class="carousel-dots" data-carousel-dots role="tablist" aria-label="Choose a photo">
+					{
+						photos.map((photo, i) => (
+							<button
+								type="button"
+								class="carousel-dot"
+								data-carousel-dot
+								role="tab"
+								aria-label={`Photo ${i + 1} of ${photos.length}: ${photo.caption}`}
+								aria-selected={i === 0 ? 'true' : 'false'}
+							/>
+						))
+					}
+				</div>
+				<button type="button" class="carousel-arrow" data-carousel-next aria-label="Next photo">
+					<Icon name="arrow" class="h-4 w-4" />
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.carousel {
+		position: relative;
+		max-width: 42rem;
+		margin-inline: auto;
+	}
+
+	.carousel-viewport {
+		border-radius: 1.5rem;
+		overflow: hidden;
+		box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.65);
+	}
+
+	.carousel-track {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		/* data-lenis-prevent equivalent: keep horizontal drags here from hijacking page scroll */
+		overscroll-behavior-x: contain;
+	}
+
+	.carousel-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.carousel-slide {
+		position: relative;
+		flex: 0 0 100%;
+		aspect-ratio: 4 / 3;
+		scroll-snap-align: start;
+		scroll-snap-stop: always;
+	}
+
+	.carousel-caption {
+		position: absolute;
+		inset: auto 0 0 0;
+		padding: 2.5rem 1.25rem 1.1rem;
+		background: linear-gradient(180deg, transparent, rgba(15, 13, 11, 0.85) 70%);
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: var(--color-cream);
+	}
+
+	.carousel-controls {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.25rem;
+		margin-top: 1.5rem;
+	}
+
+	.carousel-arrow {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 999px;
+		border: 1px solid rgba(246, 239, 225, 0.2);
+		color: var(--color-cream);
+		transition:
+			background-color 0.35s var(--ease-premium),
+			border-color 0.35s var(--ease-premium),
+			color 0.35s var(--ease-premium);
+	}
+
+	.carousel-arrow:active {
+		background: var(--color-clay);
+		border-color: var(--color-clay);
+		color: var(--color-ink);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.carousel-arrow:hover {
+			background: var(--color-clay);
+			border-color: var(--color-clay);
+			color: var(--color-ink);
+		}
+	}
+
+	.carousel-dots {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.carousel-dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 999px;
+		background: rgba(246, 239, 225, 0.25);
+		transition:
+			background-color 0.35s var(--ease-premium),
+			width 0.35s var(--ease-premium);
+	}
+
+	.carousel-dot[aria-selected='true'] {
+		width: 1.35rem;
+		background: var(--color-clay-light);
+	}
+</style>

@@ -1,0 +1,109 @@
+---
+import Badge from '../brand/Badge.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { instagramHandle, instagramUrl, mailHref, site, telHref } from '../../config/site';
+
+const explore = [
+	{ href: '#services', label: 'Services' },
+	{ href: '#setup', label: 'The Setup' },
+	{ href: '#events', label: 'Events' },
+	{ href: '#process', label: 'How It Works' },
+	{ href: '#about', label: 'About' },
+	{ href: '#faq', label: 'FAQ' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-cream/10 bg-ink" data-hide-mobile-cta>
+	<div class="container-page pb-10 pt-20 md:pt-24">
+		<div class="grid gap-14 md:grid-cols-12 md:gap-10">
+			<div class="md:col-span-5">
+				<Badge class="h-24 w-24" spin decorative />
+				<p class="mt-7 max-w-sm text-[0.97rem] leading-relaxed text-cream-dim">
+					A live coconut bar for weddings, corporate events and festivals across Toronto and the GTA.
+				</p>
+				<Button href="#contact" label="Book Your Event" class="mt-8" magnetic />
+			</div>
+
+			<nav class="md:col-span-3" aria-label="Footer">
+				<p class="text-xs font-bold uppercase tracking-[0.22em] text-muted">Explore</p>
+				<ul class="mt-5 space-y-3">
+					{
+						explore.map((link) => (
+							<li>
+								<a href={link.href} class="link-line text-[0.95rem] font-semibold text-cream-dim transition-colors hover:text-cream">
+									{link.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<div class="md:col-span-4">
+				<p class="text-xs font-bold uppercase tracking-[0.22em] text-muted">Get in touch</p>
+				<ul class="mt-5 space-y-3.5 text-[0.95rem] font-semibold text-cream-dim">
+					<li>
+						<a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 transition-colors hover:text-cream">
+							<Icon name="instagram" class="h-4 w-4 text-clay-light" />
+							{instagramHandle}
+						</a>
+					</li>
+					{
+						telHref && (
+							<li>
+								<a href={telHref} class="inline-flex items-center gap-2.5 transition-colors hover:text-cream">
+									<Icon name="phone" class="h-4 w-4 text-clay-light" />
+									{site.contact.phone}
+								</a>
+							</li>
+						)
+					}
+					{
+						mailHref && (
+							<li>
+								<a href={mailHref} class="inline-flex items-center gap-2.5 transition-colors hover:text-cream">
+									<Icon name="mail" class="h-4 w-4 text-clay-light" />
+									{site.contact.email}
+								</a>
+							</li>
+						)
+					}
+					<li class="inline-flex items-start gap-2.5 font-medium">
+						<Icon name="pin" class="mt-0.5 h-4 w-4 shrink-0 text-clay-light" />
+						<span>Based in Toronto · serving the GTA</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<p
+			class="footer-wordmark mt-20 select-none whitespace-nowrap font-display font-semibold leading-[0.85] tracking-[-0.05em]"
+			aria-hidden="true"
+		>
+			The Coco Shack
+		</p>
+
+		<div class="mt-8 flex flex-col gap-4 border-t border-cream/10 pt-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+			<p>&copy; {year} The Coco Shack. All rights reserved.</p>
+			<div class="flex items-center gap-6">
+				<a href="/privacy/" class="link-line transition-colors hover:text-cream">Privacy</a>
+				<a href="#top" class="link-line inline-flex items-center gap-1.5 transition-colors hover:text-cream">
+					Back to top <Icon name="arrow" class="h-3.5 w-3.5 -rotate-90" />
+				</a>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.footer-wordmark {
+		font-size: clamp(3.2rem, 14.8vw, 13.5rem);
+		background: linear-gradient(180deg, rgba(246, 239, 225, 0.22) 0%, rgba(246, 239, 225, 0.02) 95%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+</style>

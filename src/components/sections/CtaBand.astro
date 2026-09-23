@@ -1,0 +1,41 @@
+---
+import Badge from '../brand/Badge.astro';
+import Button from '../ui/Button.astro';
+import { site } from '../../config/site';
+---
+
+<section class="section" aria-labelledby="cta-title">
+	<div class="container-page">
+		<div
+			class="relative overflow-hidden rounded-[2rem] border border-cream/10 bg-panel px-6 py-16 text-center sm:px-12 md:rounded-[2.5rem] md:py-24"
+			data-reveal
+		>
+			<div class="cta-glow" aria-hidden="true"></div>
+			<Badge spin decorative class="relative mx-auto h-24 w-24 md:h-28 md:w-28" />
+			<h2 id="cta-title" class="section-title relative mx-auto mt-8 max-w-3xl">Tell us your date. <em>We’ll tell you if it’s open.</em></h2>
+			<p class="section-lede relative mx-auto mt-5">
+				Send the basics — date, guest count, what you’re planning — and we’ll come back with availability and a quote.
+			</p>
+			<div class="relative mt-10 flex flex-wrap justify-center gap-3">
+				<Button href="#contact" label="Book Your Event" size="lg" magnetic />
+				{
+					site.booking.calendlyUrl && (
+						<Button href={site.booking.calendlyUrl} label="Book a quick call" variant="ghost" size="lg" icon="calendar" data-calendly />
+					)
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.cta-glow {
+		position: absolute;
+		inset: -40% -10% auto;
+		height: 120%;
+		background:
+			radial-gradient(40% 50% at 20% 30%, rgba(193, 128, 76, 0.22), transparent 70%),
+			radial-gradient(40% 50% at 80% 70%, rgba(70, 88, 62, 0.28), transparent 70%);
+		pointer-events: none;
+	}
+</style>

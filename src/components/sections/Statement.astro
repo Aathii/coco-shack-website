@@ -1,0 +1,34 @@
+---
+/* Words wrapped in *asterisks* are set in the clay italic. Words light up as they scroll by. */
+const statement =
+	'*Coconuts opened live.* *Cocktails in the shell.* *Sugarcane on ice.* The part of the night your guests are still talking about the next day.';
+
+let inEmphasis = false;
+const words = statement.split(' ').map((raw) => {
+	const opens = raw.startsWith('*');
+	const closes = raw.endsWith('*');
+	if (opens) inEmphasis = true;
+	const word = { text: raw.replace(/\*/g, ''), em: inEmphasis };
+	if (closes) inEmphasis = false;
+	return word;
+});
+---
+
+<section class="section" aria-label="The Coco Shack experience">
+	<div class="container-page">
+		<p class="eyebrow" data-reveal>The experience</p>
+		<p
+			class="mt-8 max-w-[62rem] font-display text-[clamp(1.85rem,4.7vw,4rem)] font-medium leading-[1.12] tracking-[-0.025em] text-cream"
+			data-word-reveal
+		>
+			{words.map((w) => (w.em ? <span class="w italic text-clay-light">{w.text} </span> : <span class="w">{w.text} </span>))}
+		</p>
+	</div>
+</section>
+
+<style>
+	:global(.js) .w {
+		opacity: 0.16;
+		transition: opacity 0.25s linear;
+	}
+</style>

@@ -1,0 +1,55 @@
+---
+import Badge from '../brand/Badge.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import PhotoCrop from '../ui/PhotoCrop.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { instagramHandle, instagramUrl } from '../../config/site';
+---
+
+<section id="about" class="section border-t border-cream/10" aria-labelledby="about-title">
+	<div class="container-page grid items-center gap-16 lg:grid-cols-12 lg:gap-16">
+		<div class="relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none">
+			<PhotoCrop
+				cx={0.55}
+				cy={0.66}
+				cw={0.5}
+				aspect={0.8}
+				alt="The Coco Shack's signature board surrounded by coconut crates and island styling"
+				class="rounded-[1.75rem]"
+			/>
+			<div
+				class="absolute -bottom-7 -right-3 h-28 w-28 rounded-full bg-ink-soft p-2 text-clay-light shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] sm:-right-7 sm:h-36 sm:w-36"
+				data-reveal
+			>
+				<Badge spin decorative class="h-full w-full" />
+			</div>
+		</div>
+
+		<div class="lg:col-span-7">
+			<SectionHeading eyebrow="05 — Why Coco Shack" title="The live cut *is the point.*" titleId="about-title" />
+			<div class="mt-7 max-w-xl space-y-5 text-[1.05rem] leading-relaxed text-cream-dim" data-reveal>
+				<p>
+					Every Coco Shack bar is built around one moment: a whole young coconut, opened right in front of your guests. It’s fresh,
+					it’s a little theatrical, and it gets a Toronto crowd talking.
+				</p>
+				<p>
+					Around it we build the rest — cocktails served in the shell, mocktails, sugarcane juice, coffee and tea — styled with crates
+					of coconuts and island greenery. Branded coconuts? Eco-friendly service? Just ask.
+				</p>
+			</div>
+			<div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5" data-reveal>
+				<Button href="#contact" label="Book Your Event" magnetic />
+				<a
+					href={instagramUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-line inline-flex items-center gap-2 text-sm font-semibold text-cream"
+				>
+					<Icon name="instagram" class="h-4 w-4 text-clay-light" />
+					{instagramHandle}
+				</a>
+			</div>
+		</div>
+	</div>
+</section>

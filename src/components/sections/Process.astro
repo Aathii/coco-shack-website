@@ -1,0 +1,49 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { processSteps } from '../../data/content';
+---
+
+<section id="process" class="section border-t border-cream/10" aria-labelledby="process-title">
+	<div class="container-page">
+		<SectionHeading eyebrow="04 — How it works" title="From first message to *last call.*" titleId="process-title" />
+
+		<div class="relative mt-14 md:mt-20">
+			<div class="absolute left-0 right-0 top-[1.375rem] hidden h-px bg-cream/12 md:block" aria-hidden="true">
+				<div class="h-full w-full" data-reveal="line"><span class="reveal-inner bg-clay/70"></span></div>
+			</div>
+
+			<ol class="grid gap-10 md:grid-cols-4 md:gap-8">
+				{
+					processSteps.map((step, i) => (
+						<li class="process-step relative pl-16 md:pl-0 md:pt-16" data-reveal>
+							<span class="absolute left-0 top-0 grid h-11 w-11 place-items-center rounded-full border border-clay/60 bg-ink-soft font-display text-lg font-semibold text-clay-light">
+								{i + 1}
+							</span>
+							<h3 class="font-display text-[1.35rem] font-semibold text-cream">{step.title}</h3>
+							<p class="mt-2.5 max-w-xs text-[0.95rem] leading-relaxed text-cream-dim">{step.desc}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Vertical connector between steps on phones. */
+	.process-step:not(:last-child)::before {
+		content: '';
+		position: absolute;
+		left: 1.375rem;
+		top: 3.25rem;
+		bottom: -2.25rem;
+		width: 1px;
+		background: rgba(246, 239, 225, 0.14);
+	}
+
+	@media (min-width: 768px) {
+		.process-step::before {
+			display: none;
+		}
+	}
+</style>

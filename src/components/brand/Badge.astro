@@ -1,0 +1,39 @@
+---
+/**
+ * The Coco Shack's official circular badge (their own artwork) — the "@handle / website" lines
+ * that sit above the wordmark on the source logo are cropped out here, since every place this
+ * badge appears already carries that information elsewhere on the page (header, footer, contact).
+ */
+import { Image } from 'astro:assets';
+import logoBadge from '../../assets/brand/logo-badge.png';
+
+interface Props {
+	class?: string;
+	spin?: boolean;
+	decorative?: boolean;
+}
+
+const { class: className = '', spin = false, decorative = false } = Astro.props;
+---
+
+<Image
+	src={logoBadge}
+	alt={decorative ? '' : 'The Coco Shack — Fresh From The Islands'}
+	aria-hidden={decorative ? 'true' : undefined}
+	widths={[128, 256, 400]}
+	sizes="260px"
+	quality={90}
+	class:list={['badge', spin && 'badge-spin', className]}
+/>
+
+<style>
+	.badge {
+		display: block;
+		object-fit: contain;
+	}
+
+	/* global.css already neutralizes this under prefers-reduced-motion. */
+	.badge-spin {
+		animation: spin 40s linear infinite;
+	}
+</style>

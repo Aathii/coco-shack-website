@@ -1,0 +1,25 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { testimonials } from '../../data/content';
+---
+
+{
+	testimonials.length > 0 && (
+		<section class="section border-t border-cream/10" aria-labelledby="testimonials-title">
+			<div class="container-page">
+				<SectionHeading eyebrow="Kind words" title="What hosts *are saying.*" titleId="testimonials-title" />
+				<div class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+					{testimonials.map((t) => (
+						<figure class="flex h-full flex-col rounded-[1.6rem] border border-cream/10 bg-panel p-8" data-reveal>
+							<blockquote class="font-display text-xl leading-snug text-cream">“{t.quote}”</blockquote>
+							<figcaption class="mt-auto pt-8 text-sm">
+								<span class="block font-semibold text-cream">{t.name}</span>
+								<span class="text-muted">{t.event}</span>
+							</figcaption>
+						</figure>
+					))}
+				</div>
+			</div>
+		</section>
+	)
+}

@@ -1,0 +1,89 @@
+---
+import Icon from '../ui/Icon.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { faqs } from '../../data/content';
+---
+
+<section id="faq" class="section border-t border-cream/10" aria-labelledby="faq-title">
+	<div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+		<div class="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
+			<SectionHeading
+				eyebrow="06 — Good to know"
+				title="Questions, *answered.*"
+				titleId="faq-title"
+				lede="Something else on your mind? Add it to your booking request and we’ll cover it in our reply."
+			/>
+		</div>
+
+		<div class="border-t border-cream/10 lg:col-span-8">
+			{
+				faqs.map((faq) => (
+					<div data-reveal>
+						<details data-accordion class="faq border-b border-cream/10">
+							<summary class="faq-summary">
+								<span>{faq.q}</span>
+								<span class="faq-icon" aria-hidden="true">
+									<Icon name="plus" class="h-4 w-4" strokeWidth={1.8} />
+								</span>
+							</summary>
+							<div data-accordion-content>
+								<p class="max-w-2xl pb-7 pr-2 text-[0.98rem] leading-relaxed text-cream-dim md:pr-14">{faq.a}</p>
+							</div>
+						</details>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.faq-summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1.5rem 0;
+		cursor: pointer;
+		list-style: none;
+		font-family: var(--font-display);
+		font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+		font-weight: 600;
+		line-height: 1.3;
+		color: var(--color-cream);
+		transition: color 0.3s ease;
+	}
+
+	.faq-summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-icon {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 999px;
+		border: 1px solid rgba(246, 239, 225, 0.18);
+		color: var(--color-clay-light);
+		transition:
+			transform 0.5s var(--ease-premium),
+			background-color 0.4s ease,
+			color 0.4s ease,
+			border-color 0.4s ease;
+	}
+
+	.faq[open]:not(.is-closing) .faq-icon {
+		transform: rotate(45deg);
+		background: var(--color-clay);
+		border-color: var(--color-clay);
+		color: var(--color-ink);
+	}
+
+	@media (hover: hover) {
+		.faq-summary:hover {
+			color: var(--color-clay-light);
+		}
+	}
+</style>

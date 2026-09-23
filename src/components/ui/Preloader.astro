@@ -1,0 +1,69 @@
+---
+import { icons } from './icons';
+---
+
+<!--
+	Brief coconut-shake splash, gone within ~1s (scripts/preloader.ts). Sits on the same ink
+	background as the page so there's no flash, and never blocks content — it's a decorative
+	overlay removed from the DOM once it fades, not a gate on when the hero animates in.
+-->
+<div id="preloader" class="preloader" aria-hidden="true">
+	<svg class="preloader-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={icons.coconut} />
+</div>
+
+<style>
+	/* Hidden by default so a visitor without JS (which is what hides it again) never gets a
+	   coconut stranded on screen forever; scoped_astro attrs give this the specificity to win. */
+	.preloader {
+		display: none;
+		position: fixed;
+		inset: 0;
+		z-index: 200;
+		place-items: center;
+		background: var(--color-ink);
+		opacity: 1;
+		transition: opacity 0.4s var(--ease-premium);
+	}
+
+	:global(.js) .preloader {
+		display: grid;
+	}
+
+	.preloader.is-hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.preloader-mark {
+		width: 3rem;
+		height: 3rem;
+		color: var(--color-clay-light);
+		animation: coconut-shake 0.7s ease-in-out infinite;
+		filter: drop-shadow(0 0 18px rgba(227, 178, 126, 0.4));
+	}
+
+	@keyframes coconut-shake {
+		0%,
+		100% {
+			transform: rotate(0deg) scale(1);
+		}
+		20% {
+			transform: rotate(-14deg) scale(1.03);
+		}
+		40% {
+			transform: rotate(10deg) scale(1);
+		}
+		60% {
+			transform: rotate(-7deg) scale(1.03);
+		}
+		80% {
+			transform: rotate(5deg) scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.preloader-mark {
+			animation: none;
+		}
+	}
+</style>
