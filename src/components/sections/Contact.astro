@@ -3,6 +3,8 @@
  * Direct-contact CTA — no booking form here. The multi-step form lives on the
  * `booking-form-upcharge` git branch (removed from the live site as a scoped upsell);
  * every "Book Your Event" button site-wide points at this section's #contact id.
+ * DOM order is the phone order (heading, contact cards, reassurances) so the number is
+ * on screen the moment a CTA lands here; on lg the grid places reassurances under the heading.
  */
 import Icon from '../ui/Icon.astro';
 import type { IconName } from '../ui/icons';
@@ -45,33 +47,12 @@ const contactMethods = [
 ---
 
 <section id="contact" class="section border-t border-cream/10" aria-labelledby="contact-title" data-hide-mobile-cta>
-	<div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-14">
-		<div class="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+	<div class="container-page grid gap-y-10 lg:grid-cols-12 lg:gap-x-14 lg:gap-y-0">
+		<div class="lg:col-span-5 lg:row-start-1">
 			<SectionHeading eyebrow="07 — Get in touch" title="Let’s talk about *your event.*" titleId="contact-title" lede={lede} />
-
-			<ul class="mt-9 space-y-4" data-reveal>
-				{
-					reassurances.map((item) => (
-						<li class="flex items-center gap-3.5 text-[0.97rem] text-cream-dim">
-							<span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-cream/12 text-clay-light">
-								<Icon name={item.icon} class="h-4 w-4" />
-							</span>
-							{item.text}
-						</li>
-					))
-				}
-			</ul>
-
-			{
-				site.pricing.startingFrom && (
-					<p class="mt-8 text-sm text-cream-dim" data-reveal>
-						Most events start from <strong class="font-semibold text-cream">{site.pricing.startingFrom}</strong>.
-					</p>
-				)
-			}
 		</div>
 
-		<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:col-span-7 lg:self-start lg:pt-2" data-reveal>
+		<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 lg:self-start lg:pt-2" data-reveal>
 			{
 				contactMethods.map((method) => (
 					<a
@@ -90,6 +71,29 @@ const contactMethods = [
 						</span>
 					</a>
 				))
+			}
+		</div>
+
+		<div class="lg:col-span-5 lg:row-start-2 lg:mt-9">
+			<ul class="space-y-4" data-reveal>
+				{
+					reassurances.map((item) => (
+						<li class="flex items-center gap-3.5 text-[0.97rem] text-cream-dim">
+							<span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-cream/12 text-clay-light">
+								<Icon name={item.icon} class="h-4 w-4" />
+							</span>
+							{item.text}
+						</li>
+					))
+				}
+			</ul>
+
+			{
+				site.pricing.startingFrom && (
+					<p class="mt-8 text-sm text-cream-dim" data-reveal>
+						Most events start from <strong class="font-semibold text-cream">{site.pricing.startingFrom}</strong>.
+					</p>
+				)
 			}
 		</div>
 	</div>
