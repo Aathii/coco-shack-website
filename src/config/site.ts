@@ -14,15 +14,12 @@ export const site = {
 
 	contact: {
 		// Sourced from their own "Contact Us Today" Instagram post — please confirm these are still current.
-		email: 'thecocoshack.toronto@gmail.com', // shown on the site + used as a backup if the form service is down
+		email: 'thecocoshack.toronto@gmail.com', // shown in the contact section + footer, and used for every "email us" button
 		phone: '(647) 673-2018', // adds call/text buttons everywhere
 		instagram: 'thecocoshack.toronto',
 	},
 
 	booking: {
-		// Free key from https://web3forms.com — enter the inbox that should receive booking requests.
-		// Until this is set, the form hands visitors off to email (if set above) or Instagram DMs.
-		web3formsKey: '',
 		// Optional, e.g. 'https://calendly.com/thecocoshack/intro-call' — adds "Book a quick call" buttons.
 		calendlyUrl: '',
 		// Optional, e.g. 'one business day' — shown as "we usually reply within …". Only promise what you'll keep.

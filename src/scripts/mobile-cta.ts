@@ -1,6 +1,6 @@
 import { onScroll } from './smooth-scroll';
 
-/** Sticky "Book Your Event" bar on phones: appears after the hero, hides near the form and footer. */
+/** Sticky "Book Your Event" bar on phones: appears after the hero, hides over the contact section and footer. */
 export function initMobileCta() {
 	const bar = document.getElementById('mobile-cta');
 	if (!bar) return;

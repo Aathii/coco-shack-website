@@ -1,5 +1,4 @@
 import { initAccordion } from './accordion';
-import { initBookingForm } from './booking-form';
 import { initCalendlyButtons } from './calendly';
 import { initHeader } from './header';
 import { initHero } from './hero';
@@ -21,5 +20,4 @@ initAccordion();
 initPointerFx();
 initMobileCta();
 initCalendlyButtons();
-initBookingForm();
 initOwnerCarousel();

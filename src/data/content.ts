@@ -48,32 +48,27 @@ export const services: {
 	},
 ];
 
-/** `value` must match an option in the booking form so the rows can pre-select it. */
-export const eventTypes: { value: string; title: string; desc: string }[] = [
+export const eventTypes: { title: string; desc: string }[] = [
 	{
-		value: 'Wedding',
 		title: 'Weddings',
 		desc: 'The cocktail-hour moment your guests film: coconuts opened live, signature drinks, a setup styled to your day.',
 	},
 	{
-		value: 'Corporate / brand event',
 		title: 'Corporate & brand activations',
 		desc: 'Logo-branded coconuts turn the bar into a brand moment — made for photos and conversation.',
 	},
 	{
-		value: 'Festival / market',
 		title: 'Festivals & markets',
 		desc: 'The live cut is a showpiece that draws a crowd — and keeps it coming back.',
 	},
 	{
-		value: 'Private celebration',
 		title: 'Private celebrations',
 		desc: 'Milestone birthdays, showers and anniversaries, with island vibes built in.',
 	},
 ];
 
 export const processSteps: { title: string; desc: string }[] = [
-	{ title: 'Tell us about it', desc: 'Share your date, guest count and vision through the booking form — it takes about a minute.' },
+	{ title: 'Tell us about it', desc: 'Call, email or DM us your date, guest count and vision — it takes about a minute.' },
 	{ title: 'Plan your bar', desc: 'We suggest stations and styling, then send a quote for your event.' },
 	{ title: 'We set up', desc: 'We coordinate load-in with your venue and style the station on site.' },
 	{ title: 'Served live', desc: 'Coconuts opened and drinks poured right in front of your guests.' },
@@ -100,7 +95,7 @@ export const faqs: { q: string; a: string }[] = [
 	},
 	{
 		q: 'Can you brand the setup for our company or event?',
-		a: 'Yes — we can brand coconuts with your logo or names. Mention it in your request and we’ll include it in your quote.',
+		a: 'Yes — we can brand coconuts with your logo or names. Mention it when you get in touch and we’ll include it in your quote.',
 	},
 	{
 		q: 'Do you travel outside the GTA?',
@@ -130,13 +125,3 @@ export const marqueeItems = [
 	'Festivals',
 	'Private Parties',
 ];
-
-/** Booking form choices. Edit labels/options here; the email you receive uses these values. */
-export const bookingOptions = {
-	eventTypes: ['Wedding', 'Corporate / brand event', 'Festival / market', 'Private celebration', 'Something else'],
-	guestCounts: ['Under 50', '50–100', '100–200', '200–400', '400+'],
-	stations: ['Coconut Bar', 'Sugarcane Juice', 'Mocktails & Cocktails', 'Coffee & Tea', 'Not sure yet — recommend something'],
-	serviceTimes: ['Up to 2 hours', '2–4 hours', '4+ hours', 'Not sure yet'],
-	budgets: ['Under $3k', '$3k–$5k', '$5k–$8k', '$8k+', 'Not sure yet'],
-	referrals: ['Instagram', 'Google', 'A friend or colleague', 'Saw you at an event', 'Other'],
-};

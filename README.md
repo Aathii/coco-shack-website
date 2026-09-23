@@ -9,15 +9,14 @@ All in `src/config/site.ts`. Anything left blank simply hides itself.
 
 | Setting | What it does |
 | :-- | :-- |
-| `booking.web3formsKey` | Booking requests are emailed to you. Get a free key at [web3forms.com](https://web3forms.com) (enter the inbox that should receive bookings). Until it's set, the form hands visitors off to email or an Instagram DM so no lead is lost. |
-| `contact.email` | Shown in the footer/contact section and used as the backup delivery route. |
-| `contact.phone` | Adds call/text buttons (including the sticky mobile bar). Any format, e.g. `(416) 555-0123`. |
+| `contact.email` | Shown in the contact section and footer; powers the "Email" button. |
+| `contact.phone` | Powers the "Call" button, the sticky mobile bar and the mobile menu. Any format, e.g. `(416) 555-0123`. |
 | `booking.calendlyUrl` | Optional. Adds "Book a quick call" buttons that open your Calendly in a popup. |
 | `booking.responseTime` | Optional, e.g. `one business day`. Shows "we usually reply within …" — only promise what you'll keep. |
 | `pricing.startingFrom` | Optional, e.g. `$3,000`. Shows "Most events start from …" to screen out budgets that don't fit. |
 | `url` | Your live domain. Keep in sync with `site` in `astro.config.mjs` and the sitemap line in `public/robots.txt`. |
 
-Then review the copy in `src/data/content.ts` (services, event types, FAQs, booking-form options) and the privacy notice in `src/pages/privacy.astro`.
+Then review the copy in `src/data/content.ts` (services, event types, FAQs) and the privacy notice in `src/pages/privacy.astro`.
 
 **Testimonials:** add real client quotes to `testimonials` in `src/data/content.ts` — the section appears automatically once there's at least one.
 
@@ -51,9 +50,25 @@ npm run check      # type/template checks
 
 ```text
 src/config/site.ts          business details + integrations
-src/data/content.ts         services, events, FAQs, testimonials, form options
-src/components/sections/    one file per page section (Hero, Services, Booking…)
-src/components/booking/     the multi-step booking form
-src/scripts/                all interactivity (smooth scroll, reveals, header, form…)
-src/styles/global.css       colours, fonts, buttons, form controls, animations
+src/data/content.ts         services, events, FAQs, testimonials
+src/components/sections/    one file per page section (Hero, Services, Contact…)
+src/scripts/                all interactivity (smooth scroll, reveals, header, carousel…)
+src/styles/global.css       colours, fonts, buttons, animations
 ```
+
+## Booking form (optional add-on)
+
+The live site has no contact form: every "Book Your Event" button goes to the **Get in touch** section, where visitors call, email or DM directly.
+The full multi-step booking form (validation, draft saving, Web3Forms delivery, mailto/Instagram fallback) is kept on the **`booking-form-upcharge`** branch, exactly as it was before it was removed.
+
+- **See or deploy the with-form version:** `git checkout booking-form-upcharge`
+- **Bring the form back onto `main`** (keeps every later change to `main`): revert the removal commit —
+
+  ```sh
+  git log --oneline --grep "Remove booking form"   # find the commit
+  git revert <that-commit-hash>
+  ```
+
+  Then add a free [Web3Forms](https://web3forms.com) key as `booking.web3formsKey` in `src/config/site.ts` so submissions are emailed to the owner.
+
+  (A plain `git merge booking-form-upcharge` will **not** restore it — `main` records the form files as deliberately deleted.)
