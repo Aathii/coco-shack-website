@@ -7,7 +7,7 @@ export const site = {
 	shortName: 'Coco Shack',
 	tagline: 'Fresh From The Islands',
 	description:
-		"Toronto's live coconut bar — coconuts cut live, cocktails served in the shell, fresh sugarcane juice, mocktails, coffee and tea for weddings, corporate events and festivals across the GTA.",
+		"Toronto's live coconut bar — coconuts cut live, with mocktails and cocktails served right in the shell, for weddings, corporate events and festivals across the GTA.",
 
 	// Keep in sync with `site` in astro.config.mjs.
 	url: 'https://thecocoshack.ca',

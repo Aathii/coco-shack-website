@@ -23,28 +23,20 @@ export const services: {
 		points: ['Opened fresh, to order', 'Served right in the shell', 'Logo-branded coconuts available'],
 	},
 	{
-		id: 'sugarcane-juice',
-		icon: 'cane',
-		title: 'Sugarcane Juice',
-		kicker: 'Fresh & ice-cold',
-		desc: 'Sweet, fresh sugarcane juice served ice-cold — a crowd favourite alongside the coconut bar.',
-		points: ['Fresh, served ice-cold', 'Pairs with any station', 'Ask about a live press'],
+		id: 'mocktails',
+		icon: 'mocktail',
+		title: 'Mocktails',
+		kicker: 'For every guest',
+		desc: 'Alcohol-free signature drinks, poured right into the shell — every guest gets the full coconut moment. Fresh, bright and built around your event.',
+		points: ['Alcohol-free, all ages', 'Poured right into the shell', 'Custom signature drinks'],
 	},
 	{
-		id: 'mocktails-cocktails',
+		id: 'cocktails',
 		icon: 'cocktail',
-		title: 'Mocktails & Cocktails',
-		kicker: 'Served in the shell',
-		desc: 'Signature drinks built around your event — mocktails for every guest, and cocktails served right in the coconut where your venue allows.',
-		points: ['Custom signature drinks', 'Mocktails for every guest', 'Cocktails in the shell'],
-	},
-	{
-		id: 'coffee-tea',
-		icon: 'mug',
-		title: 'Coffee & Tea',
-		kicker: 'For any hour',
-		desc: 'Coffee and tea for morning meetings, cooler evenings and everything in between.',
-		points: ['Coffee & tea service', 'Great for corporate mornings', 'Pairs with any station'],
+		title: 'Cocktails',
+		kicker: 'In the shell',
+		desc: 'Signature cocktails poured right into the coconut — the drink everyone photographs first. Served where your venue allows; we’ll confirm the details when we plan your event.',
+		points: ['Custom signature cocktails', 'Poured right into the coconut', 'Served where your venue allows'],
 	},
 ];
 
@@ -73,7 +65,7 @@ export const eventTypes: { value: string; title: string; desc: string }[] = [
 ];
 
 export const processSteps: { title: string; desc: string }[] = [
-	{ title: 'Tell us about it', desc: 'Share your date, guest count and vision through the booking form — it takes about a minute.' },
+	{ title: 'Tell us about it', desc: 'Share your date, guest count and how many coconuts you need — it takes about a minute.' },
 	{ title: 'Plan your bar', desc: 'We suggest stations and styling, then send a quote for your event.' },
 	{ title: 'We set up', desc: 'We coordinate load-in with your venue and style the station on site.' },
 	{ title: 'Served live', desc: 'Coconuts opened and drinks poured right in front of your guests.' },
@@ -96,7 +88,7 @@ export const faqs: { q: string; a: string }[] = [
 	},
 	{
 		q: 'Do you serve alcohol?',
-		a: 'Yes — cocktails can be served right in the coconut. Alcohol service depends on your venue and permits, so we’ll confirm the details when we plan your event. Coconut water, sugarcane juice, mocktails, coffee and tea are always on the menu too.',
+		a: 'Yes — cocktails can be served right in the coconut. Alcohol service depends on your venue and permits, so we’ll confirm the details when we plan your event. Fresh coconut water and mocktails are always on the menu too.',
 	},
 	{
 		q: 'Can you brand the setup for our company or event?',
@@ -121,9 +113,8 @@ export const testimonials: { quote: string; name: string; event: string }[] = []
 export const marqueeItems = [
 	'Coconut Bar',
 	'Cocktails in the Shell',
-	'Sugarcane Juice',
 	'Mocktails',
-	'Coffee & Tea',
+	'Coconuts Opened Live',
 	'Weddings',
 	'Corporate Events',
 	'Brand Activations',
@@ -135,5 +126,5 @@ export const marqueeItems = [
 export const bookingOptions = {
 	eventTypes: ['Wedding', 'Corporate / brand event', 'Festival / market', 'Private celebration', 'Something else'],
 	guestCounts: ['Under 50', '50–100', '100–200', '200–400', '400+'],
-	stations: ['Coconut Bar', 'Sugarcane Juice', 'Mocktails & Cocktails', 'Coffee & Tea', 'Not sure yet — recommend something'],
+	stations: ['Coconut Bar', 'Mocktails', 'Cocktails', 'Not sure yet — recommend something'],
 };

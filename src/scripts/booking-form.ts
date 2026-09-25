@@ -15,6 +15,7 @@ type Booking = {
 	eventType: string;
 	eventDate: string;
 	guests: string;
+	coconuts: string;
 	location: string;
 	stations: string[];
 	message: string;
@@ -22,6 +23,12 @@ type Booking = {
 
 const DRAFT_KEY = 'coco-booking-draft';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const COUNT_PATTERN = /^\d+$/;
+
+/** "1,000" and "1 000" → "1000": the owner orders the exact number, so only the canonical digits are kept. */
+function normaliseCount(value: string) {
+	return value.replace(/[\s,]/g, '').replace(/^0+(?=\d)/, '');
+}
 
 function prettyDate(iso: string) {
 	if (!iso) return '';
@@ -40,6 +47,7 @@ function summaryLines(b: Booking) {
 		`Event: ${b.eventType}`,
 		`Date: ${prettyDate(b.eventDate) || 'Not set yet'}`,
 		`Guests: ${b.guests}`,
+		`Coconuts: ${b.coconuts}`,
 		`Location: ${b.location || '—'}`,
 		`Stations: ${b.stations.join(', ')}`,
 		'',
@@ -50,8 +58,11 @@ function summaryLines(b: Booking) {
 	];
 }
 
+/** Inbox subject, e.g. "Wedding, Sat, June 6, 2027 — Jane Doe · 150 coconuts" — the count is what the owner needs at a glance. */
 function subjectFor(b: Booking) {
-	return `${b.eventType}${b.eventDate ? `, ${prettyDate(b.eventDate)}` : ''} — ${b.name}`;
+	const when = b.eventDate ? `, ${prettyDate(b.eventDate)}` : '';
+	const coconuts = b.coconuts ? ` · ${b.coconuts} ${b.coconuts === '1' ? 'coconut' : 'coconuts'}` : '';
+	return `${b.eventType}${when} — ${b.name}${coconuts}`;
 }
 
 function setButtonLabel(button: Element, label: string) {
@@ -180,6 +191,16 @@ export function initBookingForm() {
 			if (message && !firstInvalid) firstInvalid = phone;
 		}
 
+		// The owner orders the exact number, so a filled-in count must be a whole number of at least 1.
+		// (An empty field is already reported by the `data-required` pass above.)
+		const coconuts = step.querySelector<HTMLInputElement>('input[name="coconuts"]');
+		if (coconuts && coconuts.value.trim()) {
+			const count = normaliseCount(coconuts.value);
+			const message = COUNT_PATTERN.test(count) && Number(count) >= 1 && count.length <= 6 ? null : 'Enter a whole number of coconuts, like 150.';
+			setError('coconuts', message);
+			if (message && !firstInvalid) firstInvalid = coconuts;
+		}
+
 		return firstInvalid;
 	};
 
@@ -294,6 +315,7 @@ export function initBookingForm() {
 			eventType: text('eventType'),
 			eventDate: text('eventDate'),
 			guests: text('guests'),
+			coconuts: normaliseCount(text('coconuts')),
 			location: text('location'),
 			stations: data.getAll('stations').map(String),
 			message: text('message'),
@@ -319,6 +341,7 @@ export function initBookingForm() {
 					'Event type': b.eventType,
 					'Event date': prettyDate(b.eventDate) || 'Not set yet',
 					Guests: b.guests,
+					Coconuts: b.coconuts,
 					Location: b.location || '—',
 					Stations: b.stations.join(', '),
 					Notes: b.message || '—',

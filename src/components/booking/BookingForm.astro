@@ -9,9 +9,8 @@ const dmUrl = `https://ig.me/m/${site.contact.instagram}`;
 const { responseTime, calendlyUrl } = site.booking;
 const stationIcons: Record<string, IconName> = {
 	'Coconut Bar': 'coconut',
-	'Sugarcane Juice': 'cane',
-	'Mocktails & Cocktails': 'cocktail',
-	'Coffee & Tea': 'mug',
+	'Mocktails': 'mocktail',
+	'Cocktails': 'cocktail',
 };
 ---
 
@@ -84,6 +83,27 @@ const stationIcons: Record<string, IconName> = {
 				<p id="err-guests" class="field-error" data-error-for="guests" hidden></p>
 			</fieldset>
 
+			<!-- The input matches the date field's column width so a short number doesn't swim in a full-width box; the hint runs full width. -->
+			<div class="mt-7">
+				<label for="f-coconuts" class="field-label">How many coconuts? <span class="text-clay-light" aria-hidden="true">*</span></label>
+				<input
+					id="f-coconuts"
+					name="coconuts"
+					type="text"
+					inputmode="numeric"
+					pattern="[0-9]*"
+					maxlength="6"
+					autocomplete="off"
+					class="field sm:max-w-[calc(50%-0.625rem)]"
+					placeholder="e.g. 150"
+					data-required
+					data-error-message="Tell us how many coconuts you need."
+					aria-describedby="f-coconuts-hint f-coconuts-error"
+				/>
+				<p id="f-coconuts-hint" class="field-hint">Most hosts plan one per guest — give us your best number and we’ll fine-tune it together.</p>
+				<p id="f-coconuts-error" class="field-error" data-error-for="coconuts" hidden></p>
+			</div>
+
 			<fieldset class="mt-7" data-required-group="stations" data-error-message="Choose at least one — or “Not sure yet”.">
 				<legend class="field-label">
 					Stations <span class="text-clay-light" aria-hidden="true">*</span>
@@ -91,8 +111,8 @@ const stationIcons: Record<string, IconName> = {
 				</legend>
 				<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
 					{
-						bookingOptions.stations.map((station) => (
-							<label class:list={['option', !stationIcons[station] && 'sm:col-span-2']}>
+						bookingOptions.stations.map((station, i) => (
+							<label class:list={['option', !stationIcons[station] && i % 2 === 0 && 'sm:col-span-2']}>
 								<input type="checkbox" name="stations" value={station} aria-describedby="err-stations" />
 								<span class="option-check is-square">
 									<Icon name="check" class="h-3 w-3" strokeWidth={3} />
@@ -206,7 +226,7 @@ const stationIcons: Record<string, IconName> = {
 
 		<ol class="mx-auto mt-9 max-w-sm space-y-3 text-left text-sm text-cream-dim">
 			<li class="flex gap-3"><span class="result-step">1</span> We check your date is open.</li>
-			<li class="flex gap-3"><span class="result-step">2</span> We suggest the right stations and setup.</li>
+			<li class="flex gap-3"><span class="result-step">2</span> We confirm your coconut count and suggest the right setup.</li>
 			<li class="flex gap-3"><span class="result-step">3</span> Confirm, and we’ll plan the details with you.</li>
 		</ol>
 
