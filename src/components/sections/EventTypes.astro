@@ -10,14 +10,14 @@ import { eventTypes } from '../../data/content';
 			eyebrow="03 — Built for"
 			title="Weddings, brand moments *and festival days.*"
 			titleId="events-title"
-			lede="Pick yours to get in touch — we’ll tailor the stations and styling to it."
+			lede="Pick yours to start a booking — we’ll tailor the stations and styling to it."
 		/>
 
 		<ul class="mt-12 border-t border-cream/10 md:mt-16">
 			{
 				eventTypes.map((event, i) => (
 					<li data-reveal>
-						<a href="#contact" class="event-row group">
+						<a href="#contact" data-prefill-event={event.value} class="event-row group">
 							<span class="event-num font-display text-sm italic text-muted">0{i + 1}</span>
 							<span class="event-title font-display text-[1.7rem] font-semibold leading-tight text-cream md:text-[2.1rem]">
 								{event.title}
@@ -26,7 +26,7 @@ import { eventTypes } from '../../data/content';
 							<span class="event-arrow" aria-hidden="true">
 								<Icon name="arrow-up-right" class="h-5 w-5" />
 							</span>
-							<span class="sr-only"> — get in touch</span>
+							<span class="sr-only"> — start a booking</span>
 						</a>
 					</li>
 				))

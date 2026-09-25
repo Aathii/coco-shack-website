@@ -45,7 +45,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Anchor jumps and keyboard focus all land just below the fixed header (Lenis honours this too). */
+    /* Anchor jumps, form steps and keyboard focus all land just below the fixed header (Lenis honours this too). */
     scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
     /* Keeps the page from shifting sideways when the menu or a popup locks scrolling on desktop. */
     scrollbar-gutter: stable;
@@ -597,7 +597,7 @@
     transform: scaleX(1);
   }
 
-  /* Programmatic focus targets (anchor jumps) don't need a visible ring. */
+  /* Programmatic focus targets (anchor jumps, form steps) don't need a visible ring. */
   [tabindex='-1']:focus {
     outline: none;
   }

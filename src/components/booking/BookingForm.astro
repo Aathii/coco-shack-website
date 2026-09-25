@@ -1,0 +1,371 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import type { IconName } from '../ui/icons';
+import { instagramHandle, instagramUrl, site } from '../../config/site';
+import { bookingOptions } from '../../data/content';
+
+const dmUrl = `https://ig.me/m/${site.contact.instagram}`;
+const { responseTime, calendlyUrl } = site.booking;
+const stationIcons: Record<string, IconName> = {
+	'Coconut Bar': 'coconut',
+	'Sugarcane Juice': 'cane',
+	'Mocktails & Cocktails': 'cocktail',
+	'Coffee & Tea': 'mug',
+};
+---
+
+<div id="booking-card" class="booking-card">
+	<form
+		id="booking-form"
+		novalidate
+		data-access-key={site.booking.web3formsKey}
+		data-inbox={site.contact.email}
+		data-dm={dmUrl}
+	>
+		<div class="mb-8">
+			<div class="flex items-baseline justify-between gap-3 text-[0.7rem] font-bold uppercase tracking-[0.2em]">
+				<span class="text-clay-light" data-step-count aria-live="polite">Step 1 of 2</span>
+				<span class="text-muted" data-step-name>Your event</span>
+			</div>
+			<div class="mt-3 grid grid-cols-2 gap-1.5" aria-hidden="true">
+				<span class="progress-bar is-active" data-progress-bar></span>
+				<span class="progress-bar" data-progress-bar></span>
+			</div>
+		</div>
+
+		<!-- Step 1 -->
+		<div data-step data-step-name="Your event" role="group" aria-labelledby="step-1-title">
+			<h3 id="step-1-title" class="step-title" data-step-title tabindex="-1">Tell us about your event</h3>
+
+			<fieldset class="mt-7" data-required-group="eventType" data-error-message="Pick the type of event.">
+				<legend class="field-label">What are you planning? <span class="text-clay-light" aria-hidden="true">*</span></legend>
+				<div class="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2">
+					{
+						bookingOptions.eventTypes.map((type) => (
+							<label class="option">
+								<input type="radio" name="eventType" value={type} aria-describedby="err-eventType" />
+								<span class="option-check">
+									<Icon name="check" class="h-3 w-3" strokeWidth={3} />
+								</span>
+								<span>{type}</span>
+							</label>
+						))
+					}
+				</div>
+				<p id="err-eventType" class="field-error" data-error-for="eventType" hidden></p>
+			</fieldset>
+
+			<div class="mt-7 grid gap-5 sm:grid-cols-2">
+				<div>
+					<label for="f-date" class="field-label">Event date</label>
+					<input id="f-date" name="eventDate" type="date" class="field" aria-describedby="f-date-hint f-date-error" />
+					<p id="f-date-hint" class="field-hint">Not locked in yet? Leave it blank.</p>
+					<p id="f-date-error" class="field-error" data-error-for="eventDate" hidden></p>
+				</div>
+				<div>
+					<label for="f-location" class="field-label">Venue or city</label>
+					<input id="f-location" name="location" type="text" class="field" autocomplete="address-level2" placeholder="e.g. Vaughan" />
+				</div>
+			</div>
+
+			<fieldset class="mt-7" data-required-group="guests" data-error-message="Roughly how many guests are you expecting?">
+				<legend class="field-label">Guest count <span class="text-clay-light" aria-hidden="true">*</span></legend>
+				<div class="flex flex-wrap gap-2">
+					{
+						bookingOptions.guestCounts.map((count) => (
+							<label class="option option-chip">
+								<input type="radio" name="guests" value={count} aria-describedby="err-guests" />
+								<span>{count}</span>
+							</label>
+						))
+					}
+				</div>
+				<p id="err-guests" class="field-error" data-error-for="guests" hidden></p>
+			</fieldset>
+
+			<fieldset class="mt-7" data-required-group="stations" data-error-message="Choose at least one — or “Not sure yet”.">
+				<legend class="field-label">
+					Stations <span class="text-clay-light" aria-hidden="true">*</span>
+					<span class="font-medium text-muted">(choose at least one)</span>
+				</legend>
+				<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+					{
+						bookingOptions.stations.map((station) => (
+							<label class:list={['option', !stationIcons[station] && 'sm:col-span-2']}>
+								<input type="checkbox" name="stations" value={station} aria-describedby="err-stations" />
+								<span class="option-check is-square">
+									<Icon name="check" class="h-3 w-3" strokeWidth={3} />
+								</span>
+								{stationIcons[station] && <Icon name={stationIcons[station]} class="h-5 w-5 shrink-0 text-clay-light" />}
+								<span>{station}</span>
+							</label>
+						))
+					}
+				</div>
+				<p id="err-stations" class="field-error" data-error-for="stations" hidden></p>
+			</fieldset>
+		</div>
+
+		<!-- Step 2 -->
+		<div data-step data-step-name="Your details" role="group" aria-labelledby="step-2-title" hidden>
+			<h3 id="step-2-title" class="step-title" data-step-title tabindex="-1">How can we reach you?</h3>
+
+			<div class="mt-7 grid gap-5 sm:grid-cols-2">
+				<div class="sm:col-span-2">
+					<label for="f-name" class="field-label">Full name <span class="text-clay-light" aria-hidden="true">*</span></label>
+					<input
+						id="f-name"
+						name="name"
+						type="text"
+						class="field"
+						autocomplete="name"
+						data-required
+						data-error-message="Please add your name."
+						aria-describedby="f-name-error"
+					/>
+					<p id="f-name-error" class="field-error" data-error-for="name" hidden></p>
+				</div>
+				<div>
+					<label for="f-email" class="field-label">Email <span class="text-clay-light" aria-hidden="true">*</span></label>
+					<input
+						id="f-email"
+						name="email"
+						type="email"
+						inputmode="email"
+						class="field"
+						autocomplete="email"
+						data-required
+						data-error-message="We need an email so we can reply."
+						aria-describedby="f-email-error"
+					/>
+					<p id="f-email-error" class="field-error" data-error-for="email" hidden></p>
+				</div>
+				<div>
+					<label for="f-phone" class="field-label">Phone <span class="font-medium text-muted">(optional)</span></label>
+					<input
+						id="f-phone"
+						name="phone"
+						type="tel"
+						inputmode="tel"
+						class="field"
+						autocomplete="tel"
+						aria-describedby="f-phone-error"
+					/>
+					<p id="f-phone-error" class="field-error" data-error-for="phone" hidden></p>
+				</div>
+				<div class="sm:col-span-2">
+					<label for="f-message" class="field-label">Anything else we should know?</label>
+					<textarea
+						id="f-message"
+						name="message"
+						rows="4"
+						class="field"
+						data-lenis-prevent
+						placeholder="Theme, timing, logo-branded coconuts, the vibe you’re going for…"></textarea>
+				</div>
+			</div>
+
+			<input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+			<p class="mt-6 text-xs leading-relaxed text-muted">
+				We’ll only use your details to reply about your event. See our <a href={`${import.meta.env.BASE_URL}privacy/`} class="underline underline-offset-4 hover:text-cream">privacy notice</a>.
+			</p>
+		</div>
+
+		<!-- Stacked on phones (primary on top) so the labels never get squeezed. -->
+		<div class="mt-9 flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+			<Button label="Back" variant="ghost" icon={null} data-action="back" class="w-full sm:w-auto" hidden />
+			<Button label="Continue" data-action="next" class="w-full sm:w-auto" />
+			<Button label="Send My Request" type="submit" data-action="submit" class="w-full sm:w-auto" hidden />
+		</div>
+
+		<div
+			class="mt-5 rounded-2xl border border-error/35 bg-error/10 p-4 text-sm leading-relaxed text-cream"
+			data-form-alert
+			role="alert"
+			hidden
+		>
+		</div>
+	</form>
+
+	<!-- Delivered to the inbox (Web3Forms) -->
+	<div id="booking-success" class="result-panel text-center" tabindex="-1" hidden>
+		<div class="success-mark mx-auto" aria-hidden="true">
+			<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="26" cy="26" r="24" stroke-width="1.5" opacity="0.4" />
+				<path class="success-tick" d="M16 27l7 7 13-15" />
+			</svg>
+		</div>
+		<h3 class="step-title mt-7">Request received, <span data-first-name>there</span>!</h3>
+		<p class="mx-auto mt-4 max-w-md text-cream-dim">
+			We’ll reply to <strong class="font-semibold text-cream" data-reply-email></strong> about your date{
+				responseTime && `, usually within ${responseTime}`
+			}.
+		</p>
+
+		<ol class="mx-auto mt-9 max-w-sm space-y-3 text-left text-sm text-cream-dim">
+			<li class="flex gap-3"><span class="result-step">1</span> We check your date is open.</li>
+			<li class="flex gap-3"><span class="result-step">2</span> We suggest the right stations and setup.</li>
+			<li class="flex gap-3"><span class="result-step">3</span> Confirm, and we’ll plan the details with you.</li>
+		</ol>
+
+		<div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+			{calendlyUrl && <Button href={calendlyUrl} label="Book a quick call" icon="calendar" data-calendly />}
+			<Button
+				href={instagramUrl}
+				label="Follow on Instagram"
+				variant="ghost"
+				icon="instagram"
+				target="_blank"
+				rel="noopener noreferrer"
+			/>
+		</div>
+		<button type="button" class="link-line mt-7 text-sm font-semibold text-muted hover:text-cream" data-booking-reset>
+			Send another request
+		</button>
+	</div>
+
+	<!-- No inbox connected: hand the finished request to the visitor to send by email or DM -->
+	<div id="booking-handoff" class="result-panel" tabindex="-1" hidden>
+		<div class="grid h-14 w-14 place-items-center rounded-2xl bg-ink text-clay-light">
+			<Icon name={site.contact.email ? 'mail' : 'instagram'} class="h-7 w-7" />
+		</div>
+		{
+			site.contact.email ? (
+				<>
+					<h3 class="step-title mt-6">Last step — hit send in your email</h3>
+					<p class="mt-3 max-w-lg text-cream-dim">
+						We’ve opened your email app with your request filled in. Nothing opened? Copy it below and email it to{' '}
+						<strong class="font-semibold text-cream">{site.contact.email}</strong>, or send it as a DM to {instagramHandle}.
+					</p>
+				</>
+			) : (
+				<>
+					<h3 class="step-title mt-6">Last step — send it to us on Instagram</h3>
+					<p class="mt-3 max-w-lg text-cream-dim">
+						Copy your request below and paste it into a DM to {instagramHandle}. We’ll reply there about your date.
+					</p>
+				</>
+			)
+		}
+		<label for="f-request-text" class="sr-only">Your booking request</label>
+		<textarea id="f-request-text" class="field mt-6 leading-relaxed" rows="9" readonly data-request-text data-lenis-prevent></textarea>
+		<div class="mt-5 flex flex-col flex-wrap gap-3 sm:flex-row">
+			<Button label="Copy my request" icon="copy" data-copy-request />
+			{site.contact.email && <Button href={`mailto:${site.contact.email}`} label="Open email" variant="ghost" icon="mail" data-mailto />}
+			<Button href={dmUrl} label="Open Instagram DMs" variant="ghost" icon="arrow-up-right" target="_blank" rel="noopener noreferrer" />
+		</div>
+		<button type="button" class="link-line mt-6 text-sm font-semibold text-muted hover:text-cream" data-booking-edit>
+			Edit my request
+		</button>
+	</div>
+</div>
+
+<style>
+	.booking-card {
+		position: relative;
+		border-radius: 1.75rem;
+		border: 1px solid rgba(246, 239, 225, 0.1);
+		background:
+			radial-gradient(120% 60% at 100% 0%, rgba(193, 128, 76, 0.1), transparent 60%),
+			var(--color-panel);
+		padding: 1.5rem 1.25rem 1.75rem;
+		box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+	}
+
+	@media (min-width: 640px) {
+		.booking-card {
+			padding: 2.5rem;
+			border-radius: 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.booking-card {
+			padding: 3rem;
+		}
+	}
+
+	fieldset {
+		min-width: 0;
+		border: 0;
+		margin-inline: 0;
+		padding: 0;
+	}
+
+	legend {
+		padding: 0;
+	}
+
+	.step-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.55rem, 3.4vw, 2.1rem);
+		font-weight: 600;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+		color: var(--color-cream);
+	}
+
+	.progress-bar {
+		position: relative;
+		display: block;
+		height: 3px;
+		overflow: hidden;
+		border-radius: 999px;
+		background: rgba(246, 239, 225, 0.12);
+	}
+
+	.progress-bar::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--color-clay);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.7s var(--ease-premium);
+	}
+
+	.progress-bar.is-active::after {
+		transform: scaleX(1);
+	}
+
+	.step-enter {
+		animation: step-in 0.6s var(--ease-premium) both;
+	}
+
+	input[type='date']::-webkit-date-and-time-value {
+		text-align: left;
+	}
+
+	.result-panel {
+		padding-block: 0.5rem;
+	}
+
+	.success-mark {
+		width: 4.5rem;
+		height: 4.5rem;
+		color: var(--color-clay-light);
+		animation: pop-in 0.7s var(--ease-premium) 0.1s both;
+	}
+
+	.success-tick {
+		stroke-dasharray: 40;
+		stroke-dashoffset: 40;
+		animation: draw 0.7s var(--ease-premium) 0.45s forwards;
+	}
+
+	.result-step {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 999px;
+		border: 1px solid rgba(193, 128, 76, 0.6);
+		font-family: var(--font-display);
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--color-clay-light);
+	}
+</style>
