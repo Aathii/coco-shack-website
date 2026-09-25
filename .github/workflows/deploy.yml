@@ -26,11 +26,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Served at the root of the custom domain (thecocoshack.ca), so no GITHUB_PAGES subpath build.
       - run: npm run build
-        env:
-          # astro.config.mjs reads this to serve correctly from the /coco-shack-website/ subpath —
-          # unset for every other deploy target (Cloudflare Pages, the real domain, etc).
-          GITHUB_PAGES: 'true'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
