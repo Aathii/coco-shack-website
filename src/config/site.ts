@@ -20,9 +20,9 @@ export const site = {
 	},
 
 	booking: {
-		// Free key from https://web3forms.com — enter the inbox that should receive booking requests.
-		// Until this is set, the form hands visitors off to email (if set above) or Instagram DMs.
-		web3formsKey: '',
+		// Web3Forms access key (public by design) — delivers booking requests to thecocoshack.toronto@gmail.com.
+		// If emptied, the form hands visitors off to email (if set above) or Instagram DMs.
+		web3formsKey: 'ce7f2106-00c6-4694-bf95-c01f5ee49157',
 		// Optional, e.g. 'https://calendly.com/thecocoshack/intro-call' — adds "Book a quick call" buttons.
 		calendlyUrl: '',
 		// Optional, e.g. 'one business day' — shown as "we usually reply within …". Only promise what you'll keep.
