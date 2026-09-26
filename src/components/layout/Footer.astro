@@ -2,15 +2,16 @@
 import Badge from '../brand/Badge.astro';
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
-import { instagramHandle, instagramUrl, mailHref, site, telHref } from '../../config/site';
+import { eventsPath, homeLink, instagramHandle, instagramUrl, mailHref, site, telHref } from '../../config/site';
 
+const path = Astro.url.pathname;
 const explore = [
-	{ href: '#services', label: 'Services' },
-	{ href: '#setup', label: 'The Setup' },
-	{ href: '#events', label: 'Events' },
-	{ href: '#process', label: 'How It Works' },
-	{ href: '#about', label: 'About' },
-	{ href: '#faq', label: 'FAQ' },
+	{ href: homeLink(path, '#services'), label: 'Services' },
+	{ href: homeLink(path, '#setup'), label: 'The Setup' },
+	{ href: eventsPath, label: 'Events' },
+	{ href: homeLink(path, '#process'), label: 'How It Works' },
+	{ href: homeLink(path, '#about'), label: 'About' },
+	{ href: homeLink(path, '#faq'), label: 'FAQ' },
 ];
 
 const year = new Date().getFullYear();
@@ -24,7 +25,7 @@ const year = new Date().getFullYear();
 				<p class="mt-7 max-w-sm text-[0.97rem] leading-relaxed text-cream-dim">
 					A live coconut bar for weddings, corporate events and festivals across Toronto and the GTA.
 				</p>
-				<Button href="#contact" label="Book Your Event" class="mt-8" magnetic />
+				<Button href={homeLink(path, '#contact')} label="Book Your Event" class="mt-8" magnetic />
 			</div>
 
 			<nav class="md:col-span-3" aria-label="Footer">

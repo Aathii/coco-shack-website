@@ -332,7 +332,8 @@
     transition: transform 0.5s var(--ease-premium);
   }
 
-  .link-line[aria-current='true']::after {
+  .link-line[aria-current='true']::after,
+  .link-line[aria-current='page']::after {
     transform: scaleX(1);
     transform-origin: left;
   }

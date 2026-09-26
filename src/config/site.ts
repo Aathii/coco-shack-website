@@ -54,3 +54,11 @@ function toTelHref(phone: string): string {
 
 export const telHref = toTelHref(site.contact.phone);
 export const mailHref = site.contact.email ? `mailto:${site.contact.email}` : '';
+
+export const eventsPath = `${import.meta.env.BASE_URL}events/`;
+
+/** Same-page `#hash` on the home page; `/#hash` from any other page so the link lands on home. */
+export function homeLink(pathname: string, hash: string): string {
+	const base = import.meta.env.BASE_URL;
+	return pathname === base || `${pathname}/` === base ? hash : `${base}${hash}`;
+}

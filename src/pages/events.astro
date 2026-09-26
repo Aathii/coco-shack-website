@@ -1,0 +1,399 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import MobileCta from '../components/layout/MobileCta.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Icon from '../components/ui/Icon.astro';
+import booth from '../assets/booth.jpg';
+import outdoorServing from '../assets/owner/andrew-corporate-serving.jpg';
+import galaGuest from '../assets/owner/andrew-gala-guest.jpg';
+import park from '../assets/owner/andrew-hero.jpg';
+import { eventTypes } from '../data/content';
+
+type Photo = { src: ImageMetadata; alt: string; shape: 'wide' | 'tall'; position?: string };
+
+// Alt text describes what's in each photo, not which event it came from.
+const photos: Record<string, Photo> = {
+	weddings: {
+		src: galaGuest,
+		alt: 'A guest sipping from a freshly opened coconut beside The Coco Shack bar',
+		shape: 'wide',
+		position: '50% 40%',
+	},
+	corporate: {
+		src: booth,
+		alt: 'The Coco Shack booth, with its sign and crates of fresh coconuts, set up outside an office tower',
+		shape: 'tall',
+	},
+	festivals: {
+		src: outdoorServing,
+		alt: 'Andrew serving a guest at an outdoor event, with white tents and a crowd behind them',
+		shape: 'wide',
+	},
+	celebrations: {
+		src: park,
+		alt: 'Andrew holding fresh coconuts behind a Coco Shack table set up on the grass in a leafy park',
+		shape: 'tall',
+		position: '50% 55%',
+	},
+};
+
+const events = eventTypes.map((event) => ({
+	...event,
+	photo: photos[event.slug],
+	href: `${import.meta.env.BASE_URL}?event=${encodeURIComponent(event.value)}#contact`,
+}));
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Layout
+	title="Events | The Coco Shack"
+	description="Weddings, corporate and brand activations, festivals and private celebrations — a live coconut bar styled for every kind of event across Toronto and the GTA."
+>
+	<Header />
+
+	<main id="main" class="events-page">
+		<section class="events-intro" aria-labelledby="events-title">
+			<div class="events-glow" aria-hidden="true"></div>
+			<div class="container-page relative">
+				<p class="eyebrow" data-reveal>Events</p>
+				<h1 id="events-title" class="events-heading mt-6" data-reveal="clip">
+					<span class="reveal-inner">Every kind of event, <em>served fresh.</em></span>
+				</h1>
+				<p class="section-lede mt-7" data-reveal>
+					Weddings, brand activations, festivals and private parties — one live coconut bar, styled to the room and opened in
+					front of your guests.
+				</p>
+
+				<nav class="mt-14 md:mt-20" aria-label="Event types" data-reveal>
+					<ol class="events-toc">
+						{
+							events.map((event, i) => (
+								<li>
+									<a href={`#${event.slug}`} class="toc-link group">
+										<span class="toc-num">{pad(i + 1)}</span>
+										<span class="toc-label">{event.title}</span>
+									</a>
+								</li>
+							))
+						}
+					</ol>
+				</nav>
+			</div>
+		</section>
+
+		<div class="container-page">
+			<div class="events-list">
+				{
+					events.map((event, i) => (
+						<article
+							id={event.slug}
+							class:list={['event', event.photo.shape === 'wide' ? 'event-wide' : 'event-tall']}
+							aria-labelledby={`${event.slug}-title`}
+						>
+							<figure class="event-figure" data-reveal="image">
+								<div class="reveal-mask event-frame">
+									<Image
+										src={event.photo.src}
+										alt={event.photo.alt}
+										widths={event.photo.shape === 'wide' ? [640, 960, 1400, 1600] : [480, 720, 1000]}
+										sizes={
+											event.photo.shape === 'wide'
+												? '(min-width: 1280px) 880px, (min-width: 1024px) 70vw, 92vw'
+												: '(min-width: 1280px) 480px, (min-width: 1024px) 38vw, 92vw'
+										}
+										loading={i === 0 ? 'eager' : 'lazy'}
+										fetchpriority={i === 0 ? 'high' : undefined}
+										class="event-img"
+										style={event.photo.position ? `object-position: ${event.photo.position}` : undefined}
+									/>
+								</div>
+							</figure>
+
+							<div class="event-copy">
+								<p class="event-count" aria-hidden="true" data-reveal>
+									<span class="text-clay-light">{pad(i + 1)}</span>
+									<span class="event-rule" aria-hidden="true" />
+									<span>{pad(events.length)}</span>
+								</p>
+								<h2 id={`${event.slug}-title`} class="event-title" data-reveal="clip">
+									<span class="reveal-inner">{event.title}</span>
+								</h2>
+								<p class="event-desc" data-reveal>{event.desc}</p>
+								<a href={event.href} class="event-link group" data-reveal>
+									<span class="link-line">{event.cta}</span>
+									<span class="event-link-icon" aria-hidden="true">
+										<Icon name="arrow" class="h-4 w-4" />
+									</span>
+								</a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+
+		<CtaBand />
+	</main>
+
+	<Footer />
+	<MobileCta />
+</Layout>
+
+<style>
+	.events-page {
+		position: relative;
+		overflow-x: clip;
+		background: var(--color-ink-soft);
+	}
+
+	/* ---------- Intro ---------- */
+	.events-intro {
+		position: relative;
+		padding-top: clamp(9rem, 20vw, 14rem);
+		padding-bottom: clamp(4.5rem, 8vw, 6.5rem);
+	}
+
+	.events-glow {
+		position: absolute;
+		inset: -30% -10% auto auto;
+		width: min(70rem, 110vw);
+		height: 42rem;
+		background:
+			radial-gradient(45% 50% at 70% 40%, rgba(193, 128, 76, 0.16), transparent 70%),
+			radial-gradient(35% 38% at 35% 50%, rgba(70, 88, 62, 0.2), transparent 70%);
+		pointer-events: none;
+	}
+
+	.events-heading {
+		max-width: 15ch;
+		font-family: var(--font-display);
+		font-size: clamp(2.7rem, 8vw, 6.4rem);
+		font-weight: 600;
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+		color: var(--color-cream);
+	}
+
+	.events-heading em {
+		font-style: italic;
+		font-weight: 500;
+		color: var(--color-clay-light);
+	}
+
+	.events-toc {
+		display: grid;
+		border-top: 1px solid rgba(246, 239, 225, 0.1);
+	}
+
+	.toc-link {
+		display: flex;
+		align-items: baseline;
+		gap: 1rem;
+		padding-block: 1.1rem;
+		border-bottom: 1px solid rgba(246, 239, 225, 0.1);
+		color: var(--color-cream-dim);
+		transition: color 0.4s var(--ease-premium);
+	}
+
+	.toc-num {
+		font-family: var(--font-display);
+		font-size: 0.85rem;
+		font-style: italic;
+		color: var(--color-muted);
+	}
+
+	.toc-label {
+		font-size: 0.98rem;
+		font-weight: 600;
+		transition: transform 0.5s var(--ease-premium);
+	}
+
+	@media (min-width: 768px) {
+		.events-toc {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			border-bottom: 1px solid rgba(246, 239, 225, 0.1);
+		}
+
+		.toc-link {
+			flex-direction: column;
+			gap: 0.6rem;
+			height: 100%;
+			padding: 1.4rem 1.5rem 1.5rem 0;
+			border-bottom: 0;
+		}
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.toc-link:hover {
+			color: var(--color-cream);
+		}
+
+		.toc-link:hover .toc-label {
+			transform: translate3d(0.35rem, 0, 0);
+		}
+	}
+
+	/* ---------- Event list: photo, then its story underneath ---------- */
+	.events-list {
+		display: grid;
+		row-gap: clamp(6.5rem, 14vw, 11rem);
+		padding-block: clamp(1rem, 3vw, 2rem) clamp(7rem, 14vw, 11rem);
+	}
+
+	.event {
+		min-width: 0;
+	}
+
+	.event-frame {
+		position: relative;
+		overflow: hidden;
+		border-radius: 1.4rem;
+		border: 1px solid rgba(246, 239, 225, 0.08);
+		background: var(--color-panel);
+		box-shadow: 0 50px 90px -50px rgba(0, 0, 0, 0.85);
+	}
+
+	.event-wide .event-frame {
+		aspect-ratio: 3 / 2;
+	}
+
+	.event-tall .event-frame {
+		aspect-ratio: 4 / 5;
+	}
+
+	.event-img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.event-copy {
+		margin-top: 2rem;
+	}
+
+	.event-count {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		font-family: var(--font-display);
+		font-size: 0.9rem;
+		font-style: italic;
+		color: var(--color-muted);
+	}
+
+	.event-rule {
+		width: 2.5rem;
+		height: 1px;
+		background: rgba(246, 239, 225, 0.22);
+	}
+
+	.event-title {
+		margin-top: 1.1rem;
+		font-family: var(--font-display);
+		font-size: clamp(2rem, 4.2vw, 3.2rem);
+		font-weight: 600;
+		line-height: 1.04;
+		letter-spacing: -0.028em;
+		color: var(--color-cream);
+	}
+
+	.event-desc {
+		margin-top: 1.1rem;
+		max-width: 30rem;
+		font-size: 1.05rem;
+		line-height: 1.7;
+		color: var(--color-cream-dim);
+	}
+
+	.event-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.9rem;
+		min-height: 2.75rem;
+		margin-top: 1.75rem;
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: var(--color-cream);
+	}
+
+	.event-link-icon {
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		border-radius: 999px;
+		border: 1px solid rgba(246, 239, 225, 0.22);
+		color: var(--color-clay-light);
+		transition:
+			background-color 0.5s var(--ease-premium),
+			border-color 0.5s var(--ease-premium),
+			color 0.5s var(--ease-premium),
+			transform 0.6s var(--ease-premium);
+	}
+
+	.event-link:active .event-link-icon {
+		background: var(--color-clay);
+		border-color: var(--color-clay);
+		color: var(--color-ink);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.event-link:hover .event-link-icon {
+			background: var(--color-clay);
+			border-color: var(--color-clay);
+			color: var(--color-ink);
+			transform: translate3d(0.25rem, 0, 0);
+		}
+
+		.event-link:hover .link-line::after {
+			transform: scaleX(1);
+			transform-origin: left;
+		}
+	}
+
+	@media (min-width: 640px) {
+		.event-frame {
+			border-radius: 1.75rem;
+		}
+
+		.event-copy {
+			margin-top: 2.5rem;
+		}
+	}
+
+	/* Tablet: portraits sit narrower and alternate sides so the column breathes. */
+	@media (min-width: 768px) and (max-width: 1023px) {
+		.event-tall {
+			width: 72%;
+		}
+
+		.event-tall:nth-child(4n + 2) {
+			margin-left: auto;
+		}
+	}
+
+	/* Desktop: a zig-zag down a 12-column grid — landscape photos to the left, portraits to the right. */
+	@media (min-width: 1024px) {
+		.events-list {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			column-gap: 2.5rem;
+		}
+
+		.event-wide {
+			grid-column: 1 / span 9;
+		}
+
+		.event-tall {
+			grid-column: 8 / span 5;
+		}
+
+		.event-frame {
+			border-radius: 2rem;
+		}
+	}
+</style>

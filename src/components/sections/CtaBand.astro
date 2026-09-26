@@ -1,7 +1,7 @@
 ---
 import Badge from '../brand/Badge.astro';
 import Button from '../ui/Button.astro';
-import { site } from '../../config/site';
+import { homeLink, site } from '../../config/site';
 ---
 
 <section class="section" aria-labelledby="cta-title">
@@ -17,7 +17,7 @@ import { site } from '../../config/site';
 				Send the basics — date, guest count, what you’re planning — and we’ll come back with availability and a quote.
 			</p>
 			<div class="relative mt-10 flex flex-wrap justify-center gap-3">
-				<Button href="#contact" label="Book Your Event" size="lg" magnetic />
+				<Button href={homeLink(Astro.url.pathname, '#contact')} label="Book Your Event" size="lg" magnetic />
 				{
 					site.booking.calendlyUrl && (
 						<Button href={site.booking.calendlyUrl} label="Book a quick call" variant="ghost" size="lg" icon="calendar" data-calendly />

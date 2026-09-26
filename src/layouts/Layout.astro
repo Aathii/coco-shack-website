@@ -63,7 +63,14 @@ const jsonLd = {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-		<script is:inline>document.documentElement.classList.add('js');</script>
+		<script is:inline>
+			document.documentElement.classList.add('js');
+			// The splash is a first-impression beat: once per visit, not on every page change.
+			try {
+				if (sessionStorage.getItem('coco-splash')) document.documentElement.classList.add('splash-seen');
+				else sessionStorage.setItem('coco-splash', '1');
+			} catch {}
+		</script>
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}

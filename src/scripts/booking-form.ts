@@ -422,18 +422,20 @@ export function initBookingForm() {
 	form.addEventListener('input', onFieldChange);
 	form.addEventListener('change', onFieldChange);
 
-	/* "Weddings", "Festivals"… rows pre-select the event type before scrolling here. */
+	const prefillEvent = (value: string | null | undefined) => {
+		const radio = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="eventType"]')).find(
+			(input) => input.value === value,
+		);
+		if (!radio) return;
+		radio.checked = true;
+		setError('eventType', null);
+		saveDraft();
+	};
+
+	/* Same-page [data-prefill-event] triggers, and ?event=… links from the events page, pre-select the event type. */
 	document.addEventListener('click', (event) => {
 		const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-prefill-event]');
-		if (!trigger) return;
-		const radio = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="eventType"]')).find(
-			(input) => input.value === trigger.dataset.prefillEvent,
-		);
-		if (radio) {
-			radio.checked = true;
-			setError('eventType', null);
-			saveDraft();
-		}
+		if (trigger) prefillEvent(trigger.dataset.prefillEvent);
 	});
 
 	handoff.querySelector('[data-copy-request]')?.addEventListener('click', async (event) => {
@@ -472,5 +474,6 @@ export function initBookingForm() {
 	);
 
 	restoreDraft();
+	prefillEvent(new URLSearchParams(window.location.search).get('event'));
 	showStep(0, false);
 }

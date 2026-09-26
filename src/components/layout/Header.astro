@@ -1,20 +1,23 @@
 ---
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
-import { instagramHandle, instagramUrl, site, telHref } from '../../config/site';
+import { eventsPath, homeLink, instagramHandle, instagramUrl, site, telHref } from '../../config/site';
 
+const path = Astro.url.pathname;
+const onEvents = path.startsWith(eventsPath);
 const links = [
-	{ href: '#services', label: 'Services' },
-	{ href: '#events', label: 'Events' },
-	{ href: '#process', label: 'How It Works' },
-	{ href: '#about', label: 'About' },
-	{ href: '#faq', label: 'FAQ' },
+	{ href: homeLink(path, '#services'), label: 'Services' },
+	{ href: eventsPath, label: 'Events', current: onEvents },
+	{ href: homeLink(path, '#process'), label: 'How It Works' },
+	{ href: homeLink(path, '#about'), label: 'About' },
+	{ href: homeLink(path, '#faq'), label: 'FAQ' },
 ];
+const contactHref = homeLink(path, '#contact');
 ---
 
 <header id="site-header" class="site-header fixed inset-x-0 top-0 z-50">
 	<div class="header-inner container-page flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
-		<a href="#top" class="group flex items-center gap-2.5" aria-label="The Coco Shack — back to top">
+		<a href={homeLink(path, '#top')} class="group flex items-center gap-2.5" aria-label="The Coco Shack — home">
 			<Icon name="coconut" class="h-7 w-7 text-clay-light transition-transform duration-700 group-hover:-rotate-12" strokeWidth={1.7} />
 			<span class="font-display text-[1.15rem] font-semibold tracking-tight text-cream">The Coco Shack</span>
 		</a>
@@ -22,7 +25,7 @@ const links = [
 		<nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
 			{
 				links.map((link) => (
-					<a href={link.href} data-nav-link class="nav-link link-line text-sm font-semibold text-cream-dim">
+					<a href={link.href} data-nav-link aria-current={link.current ? 'page' : undefined} class="nav-link link-line text-sm font-semibold text-cream-dim">
 						{link.label}
 					</a>
 				))
@@ -30,7 +33,7 @@ const links = [
 		</nav>
 
 		<div class="flex items-center gap-2.5">
-			<Button href="#contact" label="Book Your Event" size="sm" class="hidden sm:inline-flex" magnetic />
+			<Button href={contactHref} label="Book Your Event" size="sm" class="hidden sm:inline-flex" magnetic />
 			<button
 				id="menu-toggle"
 				type="button"
@@ -56,7 +59,7 @@ const links = [
 			{
 				links.map((link, i) => (
 					<li class="menu-item" style={`--i:${i}`}>
-						<a href={link.href} class="menu-link">
+						<a href={link.href} class="menu-link" aria-current={link.current ? 'page' : undefined}>
 							<span>{link.label}</span>
 							<Icon name="arrow-up-right" class="h-5 w-5 text-clay-light" />
 						</a>
@@ -66,7 +69,7 @@ const links = [
 		</ul>
 
 		<div class="menu-item mt-auto pt-10" style={`--i:${links.length}`}>
-			<Button href="#contact" label="Book Your Event" size="lg" block />
+			<Button href={contactHref} label="Book Your Event" size="lg" block />
 			<div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm font-semibold text-cream-dim">
 				<a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2">
 					<Icon name="instagram" class="h-4 w-4 text-clay-light" />
@@ -133,7 +136,8 @@ const links = [
 	}
 
 	.nav-link:hover,
-	.nav-link[aria-current='true'] {
+	.nav-link[aria-current='true'],
+	.nav-link[aria-current='page'] {
 		color: var(--color-cream);
 	}
 
@@ -221,6 +225,10 @@ const links = [
 		letter-spacing: -0.02em;
 		color: var(--color-cream);
 		transition: color 0.3s ease;
+	}
+
+	.menu-link[aria-current='page'] {
+		color: var(--color-clay-light);
 	}
 
 	.menu-link:active {
