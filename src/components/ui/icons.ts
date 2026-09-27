@@ -16,6 +16,11 @@ export const icons = {
 	phone: '<path d="M5.2 4.5h3.1l1.6 4-2 1.3a10.5 10.5 0 0 0 6.3 6.3l1.3-2 4 1.6v3.1a1.6 1.6 0 0 1-1.7 1.6A15.6 15.6 0 0 1 3.6 6.2a1.6 1.6 0 0 1 1.6-1.7Z"/>',
 	mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.2 7.2 7.8 5.8 7.8-5.8"/>',
 	plus: '<path d="M12 5v14M5 12h14"/>',
+	close: '<path d="M6 6l12 12M18 6 6 18"/>',
+	'chevron-left': '<path d="m14.5 5.5-6.5 6.5 6.5 6.5"/>',
+	'chevron-right': '<path d="m9.5 5.5 6.5 6.5-6.5 6.5"/>',
+	play: '<path d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l9.8-6.2a.8.8 0 0 0 0-1.4L9.2 5.1A.8.8 0 0 0 8 5.8Z" fill="currentColor"/>',
+	grid: '<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M9.2 3.5v17M14.8 3.5v17M3.5 9.2h17M3.5 14.8h17"/>',
 	copy: '<rect x="8.5" y="8.5" width="11" height="11" rx="2.2"/><path d="M15.5 8.5V6.2a1.7 1.7 0 0 0-1.7-1.7H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6a1.7 1.7 0 0 0 1.7 1.7h2.3"/>',
 } as const;
 

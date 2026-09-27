@@ -41,34 +41,25 @@ export const services: {
 ];
 
 /** `value` must match an option in the booking form so the rows can pre-select it. */
-/** `value` must match a booking-form event option; `slug` is the anchor on the events page. */
-export const eventTypes: { value: string; slug: string; title: string; desc: string; cta: string }[] = [
+export const eventTypes: { value: string; title: string; desc: string }[] = [
 	{
 		value: 'Wedding',
-		slug: 'weddings',
 		title: 'Weddings',
-		cta: 'Plan your wedding',
 		desc: 'The cocktail-hour moment your guests film: coconuts opened live, signature drinks, a setup styled to your day.',
 	},
 	{
 		value: 'Corporate / brand event',
-		slug: 'corporate',
 		title: 'Corporate & brand activations',
-		cta: 'Plan a brand activation',
 		desc: 'Logo-branded coconuts turn the bar into a brand moment — made for photos and conversation.',
 	},
 	{
 		value: 'Festival / market',
-		slug: 'festivals',
 		title: 'Festivals & markets',
-		cta: 'Plan your festival stand',
 		desc: 'The live cut is a showpiece that draws a crowd — and keeps it coming back.',
 	},
 	{
 		value: 'Private celebration',
-		slug: 'celebrations',
 		title: 'Private celebrations',
-		cta: 'Plan your celebration',
 		desc: 'Milestone birthdays, showers and anniversaries, with island vibes built in.',
 	},
 ];

@@ -422,22 +422,6 @@ export function initBookingForm() {
 	form.addEventListener('input', onFieldChange);
 	form.addEventListener('change', onFieldChange);
 
-	const prefillEvent = (value: string | null | undefined) => {
-		const radio = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="eventType"]')).find(
-			(input) => input.value === value,
-		);
-		if (!radio) return;
-		radio.checked = true;
-		setError('eventType', null);
-		saveDraft();
-	};
-
-	/* Same-page [data-prefill-event] triggers, and ?event=… links from the events page, pre-select the event type. */
-	document.addEventListener('click', (event) => {
-		const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-prefill-event]');
-		if (trigger) prefillEvent(trigger.dataset.prefillEvent);
-	});
-
 	handoff.querySelector('[data-copy-request]')?.addEventListener('click', async (event) => {
 		const button = event.currentTarget as HTMLElement;
 		const text = handoff.querySelector<HTMLTextAreaElement>('[data-request-text]');
@@ -474,6 +458,5 @@ export function initBookingForm() {
 	);
 
 	restoreDraft();
-	prefillEvent(new URLSearchParams(window.location.search).get('event'));
 	showStep(0, false);
 }
