@@ -100,11 +100,24 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+	/* The wordmark never widens the page: on pages without the home page's clipped content card
+	   (e.g. /events/) it would otherwise scroll sideways on phones. */
+	footer {
+		overflow-x: clip;
+	}
+
 	.footer-wordmark {
 		font-size: clamp(3.2rem, 14.8vw, 13.5rem);
 		background: linear-gradient(180deg, rgba(246, 239, 225, 0.22) 0%, rgba(246, 239, 225, 0.02) 95%);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
+	}
+
+	/* Fraunces is wider at small optical sizes, so on phones 14.8vw runs ~13px past the screen edge. */
+	@media (max-width: 479px) {
+		.footer-wordmark {
+			font-size: 13vw;
+		}
 	}
 </style>
