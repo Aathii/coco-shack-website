@@ -27,7 +27,9 @@ import { faqs } from '../../data/content';
 								</span>
 							</summary>
 							<div data-accordion-content>
-								<p class="max-w-2xl pb-7 pr-2 text-[0.98rem] leading-relaxed text-cream-dim md:pr-14">{faq.a}</p>
+								<div class="max-w-2xl space-y-3 pb-7 pr-2 text-[0.98rem] leading-relaxed text-cream-dim md:pr-14">
+									{[faq.a].flat().map((paragraph) => <p>{paragraph}</p>)}
+								</div>
 							</div>
 						</details>
 					</div>

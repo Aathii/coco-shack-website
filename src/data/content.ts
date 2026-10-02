@@ -71,7 +71,8 @@ export const processSteps: { title: string; desc: string }[] = [
 	{ title: 'Served live', desc: 'Coconuts opened and drinks poured right in front of your guests.' },
 ];
 
-export const faqs: { q: string; a: string }[] = [
+/** `a` is one paragraph, or an array of paragraphs. */
+export const faqs: { q: string; a: string | string[] }[] = [
 	{
 		q: 'How far in advance should we book?',
 		a: 'As early as you can — popular dates go first, especially in wedding and festival season. Send your date and we’ll confirm availability.',
@@ -100,8 +101,22 @@ export const faqs: { q: string; a: string }[] = [
 	},
 	{
 		q: 'What’s included in a booking?',
-		a: 'Your quote spells out exactly what’s included — stations, service time, styling and setup — before you commit to anything.',
+		a: [
+			'Every Cocoshack event is a little different, so your booking should be too.',
+			'We create a personalized contract for every event, outlining exactly what’s included before you commit. From coconut station and service time to setup, styling, add-ons and any special requests, everything is clearly laid out.',
+		],
 	},
+];
+
+/**
+ * Meet the team. Headshots: add `<slug>.jpg` (or .jpeg / .png / .webp) to src/assets/team/ and the card
+ * switches from initials to the photo on the next build — no other change needed.
+ */
+export const team: { slug: string; name: string; role: string }[] = [
+	{ slug: 'andrew-ram', name: 'Andrew Ram', role: 'Founder of Cocoshack' },
+	{ slug: 'myha-harry', name: 'Myha Harry', role: 'Cocoshack Server' },
+	{ slug: 'serika-ram', name: 'Serika Ram', role: 'Media & Photography' },
+	{ slug: 'aniesha-murugesu', name: 'Aniesha Murugesu', role: 'Chief Executive Officer' },
 ];
 
 /**

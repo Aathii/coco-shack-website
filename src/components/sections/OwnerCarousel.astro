@@ -1,6 +1,6 @@
 ---
 /**
- * Andrew, the owner, on site with real clients — a sleek single-image carousel (auto-advancing,
+ * Andrew, the founder, on site with real clients — a sleek single-image carousel (auto-advancing,
  * swipeable, arrow + dot controls). Sits where the old photo-grid "Moments" section did, between
  * Setup and Process. Unnumbered, like Testimonials/CtaBand/ServiceArea: a supporting beat.
  */
@@ -16,7 +16,7 @@ import Icon from '../ui/Icon.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 
 const photos = [
-	{ src: andrewGroup, alt: 'Andrew, the owner of The Coco Shack, with a group of clients at an evening event', caption: 'With clients at an evening event' },
+	{ src: andrewGroup, alt: 'Andrew, the founder of The Coco Shack, with a group of clients at an evening event', caption: 'With clients at an evening event' },
 	{ src: andrewCuttingCloseup, alt: 'Andrew cutting a fresh coconut on site at an indoor event', caption: 'Cutting on site, gala season' },
 	{ src: andrewCorporateServing, alt: 'Andrew handing a freshly cut coconut to a guest at a corporate event', caption: 'Serving guests at a corporate event' },
 	{ src: andrewGalaGuest, alt: 'Andrew serving a coconut to a guest at an indoor gala', caption: 'An evening gala in Toronto' },
@@ -29,10 +29,9 @@ const photos = [
 <section id="team" class="section border-t border-cream/10" aria-labelledby="team-title">
 	<div class="container-page">
 		<SectionHeading
-			eyebrow="Meet the owner"
+			eyebrow="Meet the founder of Cocoshack, Andrew Ram"
 			title="Andrew, *behind every bar.*"
 			titleId="team-title"
-			lede="He's the one on site cutting, styling and serving — here he is doing it."
 			align="center"
 		/>
 
@@ -43,7 +42,7 @@ const photos = [
 					data-carousel-track
 					tabindex="0"
 					role="group"
-					aria-label="Photos of Andrew, the owner, at events. Use the arrow keys or the buttons below to browse."
+					aria-label="Photos of Andrew, the founder, at events. Use the arrow keys or the buttons below to browse."
 				>
 					{
 						photos.map((photo, i) => (
@@ -87,6 +86,13 @@ const photos = [
 				</button>
 			</div>
 		</div>
+
+		<p class="mx-auto mt-10 max-w-2xl text-center text-[1.05rem] leading-relaxed text-cream-dim md:mt-12 md:text-[1.125rem]" data-reveal>
+			Andrew is the founder of The CocoShack Toronto and the hands behind every coconut we serve. From carefully sourcing the
+			coconuts to personally chopping and opening them fresh for guests, Andrew brings the hands-on touch that makes every
+			CocoShack experience unique. His passion for quality, authenticity, and bringing a little taste of the islands to Toronto
+			is at the heart of what we do.
+		</p>
 	</div>
 </section>
 
