@@ -110,13 +110,14 @@ export const faqs: { q: string; a: string | string[] }[] = [
 
 /**
  * Meet the team. Headshots: add `<slug>.jpg` (or .jpeg / .png / .webp) to src/assets/team/ and the card
- * switches from initials to the photo on the next build — no other change needed.
+ * switches from initials to the photo on the next build — no other change needed. Crop photos to 4:5 head
+ * and shoulders first. The grid is two by two, so order matters: founder and CEO on top, then the crew.
  */
 export const team: { slug: string; name: string; role: string }[] = [
 	{ slug: 'andrew-ram', name: 'Andrew Ram', role: 'Founder of Cocoshack' },
+	{ slug: 'aniesha-murugesu', name: 'Aniesha Murugesu', role: 'Chief Executive Officer' },
 	{ slug: 'myha-harry', name: 'Myha Harry', role: 'Cocoshack Server' },
 	{ slug: 'serika-ram', name: 'Serika Ram', role: 'Media & Photography' },
-	{ slug: 'aniesha-murugesu', name: 'Aniesha Murugesu', role: 'Chief Executive Officer' },
 ];
 
 /**
